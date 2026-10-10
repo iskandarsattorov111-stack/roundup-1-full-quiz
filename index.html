@@ -3,22 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Round-Up 1 - To'liq 19 ta Mavzu Testi</title>
+    <title>New Round-Up 1 - Premium Quiz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #4f46e5;
-            --primary-hover: #4338ca;
-            --bg-color: #f3f4f6;
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             --card-bg: #ffffff;
-            --text-color: #1f2937;
-            --border-color: #e5e7eb;
+            --text-color: #1e293b;
+            --border-color: #e2e8f0;
             --success: #10b981;
             --error: #ef4444;
+            --easy: #10b981;
+            --medium: #f59e0b;
+            --hard: #ef4444;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg-gradient);
             color: var(--text-color);
             margin: 0;
             padding: 20px;
@@ -31,133 +35,200 @@
         .container {
             background-color: var(--card-bg);
             width: 100%;
-            max-width: 650px;
-            padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            max-width: 680px;
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            box-sizing: border-box;
+            transition: all 0.3s ease;
         }
 
         h1 {
-            font-size: 1.4rem;
+            font-size: 1.8rem;
             color: var(--primary);
             text-align: center;
-            margin-bottom: 5px;
+            margin: 0 0 8px 0;
+            font-weight: 700;
         }
 
         .subtitle {
             text-align: center;
-            font-size: 0.9rem;
-            color: #6b7280;
-            margin-bottom: 20px;
+            font-size: 0.95rem;
+            color: #64748b;
+            margin-bottom: 30px;
         }
 
+        /* Daraja tanlash ekrani */
+        #level-screen {
+            text-align: center;
+        }
+
+        #level-screen p {
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .level-btns {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .level-btn {
+            background-color: #ffffff;
+            border: 2px solid var(--border-color);
+            padding: 18px 20px;
+            border-radius: 16px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+
+        .level-btn.easy { border-color: var(--easy); color: var(--easy); }
+        .level-btn.medium { border-color: var(--medium); color: var(--medium); }
+        .level-btn.hard { border-color: var(--hard); color: var(--hard); }
+
+        .level-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+        }
+
+        .level-btn.easy:hover { background-color: #ecfdf5; }
+        .level-btn.medium:hover { background-color: #fffbeb; }
+        .level-btn.hard:hover { background-color: #fef2f2; }
+
+        /* Test ekrani */
         .quiz-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             font-size: 0.95rem;
             font-weight: 600;
-            color: #4b5563;
+            color: #64748b;
             border-bottom: 2px solid var(--border-color);
-            padding-bottom: 10px;
+            padding-bottom: 12px;
         }
 
         .unit-badge {
             background-color: #e0e7ff;
             color: var(--primary);
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
         }
 
         .question-text {
-            font-size: 1.15rem;
-            font-weight: 600;
-            margin-bottom: 20px;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            line-height: 1.5;
+            color: #1e293b;
         }
 
         .options-list {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            margin-bottom: 20px;
+            gap: 14px;
+            margin-bottom: 25px;
         }
 
         .option-btn {
-            background-color: #ffffff;
+            background-color: #f8fafc;
             border: 2px solid var(--border-color);
-            padding: 12px 16px;
-            border-radius: 10px;
-            font-size: 1rem;
+            padding: 16px 20px;
+            border-radius: 14px;
+            font-size: 1.05rem;
             text-align: left;
             cursor: pointer;
             transition: all 0.2s ease;
             color: var(--text-color);
+            font-weight: 500;
         }
 
         .option-btn:hover:not(:disabled) {
             border-color: var(--primary);
-            background-color: #f8fafc;
+            background-color: #eef2ff;
         }
 
         .option-btn.correct {
-            background-color: #d1fae5;
-            border-color: var(--success);
-            color: #065f46;
+            background-color: #d1fae5 !important;
+            border-color: var(--success) !important;
+            color: #065f46 !important;
+            font-weight: 600;
         }
 
         .option-btn.incorrect {
-            background-color: #fee2e2;
-            border-color: var(--error);
-            color: #991b1b;
+            background-color: #fee2e2 !important;
+            border-color: var(--error) !important;
+            color: #991b1b !important;
+            font-weight: 600;
         }
 
         .next-btn {
-            background-color: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
             color: white;
             border: none;
             width: 100%;
-            padding: 14px;
-            border-radius: 10px;
-            font-size: 1rem;
+            padding: 16px;
+            border-radius: 14px;
+            font-size: 1.05rem;
             font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: all 0.25s;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
             display: none;
         }
 
         .next-btn:hover {
-            background-color: var(--primary-hover);
+            opacity: 0.95;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
         }
 
+        /* Natija ekrani */
         .result-container {
             text-align: center;
             display: none;
         }
 
         .result-container h2 {
-            font-size: 1.8rem;
+            font-size: 2rem;
             color: var(--primary);
             margin-bottom: 10px;
         }
 
         .score-display {
-            font-size: 2.5rem;
-            font-weight: bold;
+            font-size: 3rem;
+            font-weight: 800;
             color: var(--success);
             margin: 20px 0;
         }
 
         .restart-btn {
-            background-color: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
             color: white;
             border: none;
-            padding: 12px 24px;
-            border-radius: 10px;
-            font-size: 1rem;
+            padding: 14px 28px;
+            border-radius: 14px;
+            font-size: 1.05rem;
             cursor: pointer;
             font-weight: 600;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+            transition: all 0.25s;
+        }
+
+        .restart-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
         }
     </style>
 </head>
@@ -165,9 +236,29 @@
 
     <div class="container">
         <h1>New Round-Up 1</h1>
-        <div class="subtitle">Barcha 19 ta mavzudan tuzilgan to'liq test</div>
+        <div class="subtitle">Interaktiv Grammatika Testlari</div>
 
-        <div id="quiz-screen">
+        <!-- Daraja tanlash ekrani -->
+        <div id="level-screen">
+            <p>Qiyinlik darajasini tanlang:</p>
+            <div class="level-btns">
+                <button class="level-btn easy" onclick="startQuiz('easy')">
+                    <span>🟢 Oson (Boshlang'ich)</span>
+                    <span>→</span>
+                </button>
+                <button class="level-btn medium" onclick="startQuiz('medium')">
+                    <span>🟡 O'rta (Standart)</span>
+                    <span>→</span>
+                </button>
+                <button class="level-btn hard" onclick="startQuiz('hard')">
+                    <span>🔴 Qiyin (Chuqurlashtirilgan)</span>
+                    <span>→</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Test ekrani -->
+        <div id="quiz-screen" style="display: none;">
             <div class="quiz-header">
                 <span id="question-count">Savol: 1 / 100</span>
                 <span id="unit-title" class="unit-badge">Unit 1</span>
@@ -177,171 +268,368 @@
             <button id="next-btn" class="next-btn" onclick="nextQuestion()">Keyingi savol</button>
         </div>
 
+        <!-- Natija ekrani -->
         <div id="result-screen" class="result-container">
             <h2>Test yakunlandi! 🎉</h2>
-            <p>Sizning natijangiz:</p>
+            <p style="color: #64748b; font-size: 1.1rem;">Sizning umumiy natijangiz:</p>
             <div id="score-text" class="score-display">0 / 100</div>
-            <p id="result-message" style="margin-bottom: 20px; color: #4b5563;"></p>
-            <button class="restart-btn" onclick="restartQuiz()">Qaytadan boshlash</button>
+            <p id="result-message" style="margin-bottom: 25px; color: #475569; font-size: 1.05rem; font-weight: 500;"></p>
+            <button class="restart-btn" onclick="goToHome()">Bosh sahifaga qaytish</button>
         </div>
     </div>
 
     <script>
-        const questions = [
-            // Unit 1: Personal Pronouns / Verb "To Be"
-            { unit: "Unit 1", q: "Choose the correct pronoun: '___ is a doctor.' (talking about a man)", options: ["She", "He", "It", "They"], answer: 1 },
-            { unit: "Unit 1", q: "Complete the sentence: 'We ___ students.'", options: ["am", "is", "are", "be"], answer: 2 },
-            { unit: "Unit 1", q: "Choose the correct form: 'I ___ twelve years old.'", options: ["am", "is", "are", "be"], answer: 0 },
-            { unit: "Unit 1", q: "What is the short form of 'They are'?", options: ["Theirs", "They're", "Their", "Theym"], answer: 1 },
-            { unit: "Unit 1", q: "Choose the correct option: '___ is a cat.'", options: ["He", "She", "It", "They"], answer: 2 },
+        const quizData = {
+            easy: [
+                { unit: "Unit 1", q: "Choose the correct pronoun: '___ is a boy.'", options: ["He", "She", "It", "They"], answer: 0 },
+                { unit: "Unit 1", q: "Choose the correct form: 'I ___ twelve years old.'", options: ["am", "is", "are", "be"], answer: 0 },
+                { unit: "Unit 1", q: "Complete: 'She ___ a nice teacher.'", options: ["am", "is", "are", "be"], answer: 1 },
+                { unit: "Unit 1", q: "Choose the pronoun for a girl: '___ is my sister.'", options: ["He", "She", "It", "They"], answer: 1 },
+                { unit: "Unit 1", q: "Complete: 'They ___ good friends.'", options: ["am", "is", "are", "be"], answer: 2 },
+                { unit: "Unit 1", q: "Complete: 'You ___ a good student.'", options: ["am", "is", "are", "be"], answer: 2 },
+                { unit: "Unit 2", q: "What is the plural form of 'book'?", options: ["bookes", "books", "booki", "bookz"], answer: 1 },
+                { unit: "Unit 2", q: "Choose the plural form of 'pen':", options: ["pens", "penses", "peni", "penz"], answer: 0 },
+                { unit: "Unit 2", q: "What is the plural form of 'cat'?", options: ["cates", "cats", "cati", "catz"], answer: 1 },
+                { unit: "Unit 2", q: "Choose the plural form of 'dog':", options: ["doges", "dogs", "dogi", "dogz"], answer: 1 },
+                { unit: "Unit 2", q: "What is the plural form of 'apple'?", options: ["apples", "apples", "applies", "appls"], answer: 0 },
+                { unit: "Unit 2", q: "Choose plural form of 'desk':", options: ["deskes", "desks", "deski", "deskz"], answer: 1 },
+                { unit: "Unit 3", q: "Choose the correct article: 'This is ___ apple.'", options: ["a", "an", "the", "-"], answer: 1 },
+                { unit: "Unit 3", q: "Choose the article: 'He has got ___ dog.'", options: ["an", "a", "the", "-"], answer: 1 },
+                { unit: "Unit 3", q: "Complete: 'I saw ___ elephant.'", options: ["a", "an", "the", "-"], answer: 1 },
+                { unit: "Unit 3", q: "Choose the correct article: 'She is ___ student.'", options: ["an", "a", "the", "-"], answer: 1 },
+                { unit: "Unit 3", q: "Complete: 'This is ___ orange.'", options: ["a", "an", "the", "-"], answer: 1 },
+                { unit: "Unit 3", q: "Choose the article: 'It is ___ big cat.'", options: ["a", "an", "the", "-"], answer: 0 },
+                { unit: "Unit 4", q: "Look at the pen near me: '___ is my pen.'", options: ["This", "That", "These", "Those"], answer: 0 },
+                { unit: "Unit 4", q: "Choose the correct option (single item far): '___ is a star.'", options: ["This", "That", "These", "Those"], answer: 1 },
+                { unit: "Unit 4", q: "Complete (plural near): '___ are my books.'", options: ["This", "That", "These", "Those"], answer: 2 },
+                { unit: "Unit 4", q: "Choose the correct option (plural far): '___ are birds.'", options: ["This", "That", "These", "Those"], answer: 3 },
+                { unit: "Unit 4", q: "Singular near option: '___ is a desk.'", options: ["This", "That", "These", "Those"], answer: 0 },
+                { unit: "Unit 4", q: "Choose option for item far: '___ is a car.'", options: ["This", "That", "These", "Those"], answer: 1 },
+                { unit: "Unit 5", q: "Complete: 'I ___ got a car.'", options: ["has", "have", "is", "are"], answer: 1 },
+                { unit: "Unit 5", q: "Choose the correct form: 'She ___ got a doll.'", options: ["have", "has", "is", "are"], answer: 1 },
+                { unit: "Unit 5", q: "Complete: 'They ___ got a big house.'", options: ["has", "have", "is", "are"], answer: 1 },
+                { unit: "Unit 5", q: "Choose the correct form: 'He ___ got a bike.'", options: ["have", "has", "is", "are"], answer: 1 },
+                { unit: "Unit 5", q: "Complete: 'We ___ got many friends.'", options: ["has", "have", "is", "are"], answer: 1 },
+                { unit: "Unit 5", q: "Choose form: 'You ___ got a nice bag.'", options: ["has", "have", "is", "are"], answer: 1 },
+                { unit: "Unit 6", q: "Choose for ability: 'A fish ___ swim.'", options: ["can", "can't", "is", "has"], answer: 0 },
+                { unit: "Unit 6", q: "Complete: 'Birds ___ fly.'", options: ["can", "can't", "is", "has"], answer: 0 },
+                { unit: "Unit 6", q: "Choose the correct modal: 'A dog ___ run.'", options: ["can", "can't", "is", "has"], answer: 0 },
+                { unit: "Unit 6", q: "Complete: 'Monkeys ___ climb trees.'", options: ["can", "can't", "is", "has"], answer: 0 },
+                { unit: "Unit 6", q: "Choose for ability: 'Children ___ play games.'", options: ["can", "can't", "is", "has"], answer: 0 },
+                { unit: "Unit 7", q: "Choose the imperative: '___ the door, please.'", options: ["Opening", "Close", "Closed", "Closes"], answer: 1 },
+                { unit: "Unit 7", q: "Complete command: '___ down, please.'", options: ["Sit", "Sitting", "Sats", "Sat"], answer: 0 },
+                { unit: "Unit 7", q: "Choose the imperative: '___ up!'", options: ["Stand", "Standing", "Stands", "Stood"], answer: 0 },
+                { unit: "Unit 7", q: "Complete: '___ your book.'", options: ["Open", "Opening", "Opened", "Opens"], answer: 0 },
+                { unit: "Unit 7", q: "Choose the command: '___ quiet.'", options: ["Be", "Is", "Are", "Am"], answer: 0 },
+                { unit: "Unit 8", q: "Complete: 'She ___ playing football now.'", options: ["is", "are", "am", "be"], answer: 0 },
+                { unit: "Unit 8", q: "Choose the correct form: 'I ___ reading a book.'", options: ["is", "are", "am", "be"], answer: 2 },
+                { unit: "Unit 8", q: "Complete: 'They ___ running in the park.'", options: ["is", "are", "am", "be"], answer: 1 },
+                { unit: "Unit 8", q: "Choose the form: 'He ___ sleeping now.'", options: ["is", "are", "am", "be"], answer: 0 },
+                { unit: "Unit 8", q: "Complete: 'We ___ eating lunch.'", options: ["is", "are", "am", "be"], answer: 1 },
+                { unit: "Unit 9", q: "Choose the correct form: 'I ___ up early every morning.'", options: ["get", "gets", "getting", "got"], answer: 0 },
+                { unit: "Unit 9", q: "Complete: 'He ___ to school daily.'", options: ["go", "goes", "going", "gone"], answer: 1 },
+                { unit: "Unit 9", q: "Choose the form: 'They ___ football on Sundays.'", options: ["play", "plays", "playing", "played"], answer: 0 },
+                { unit: "Unit 9", q: "Complete: 'She ___ English well.'", options: ["speak", "speaks", "speaking", "spoke"], answer: 1 },
+                { unit: "Unit 9", q: "Choose the form: 'We ___ in Tashkent.'", options: ["live", "lives", "living", "lived"], answer: 0 },
+                { unit: "Unit 10", q: "Choose the preposition: 'My birthday is ___ July.'", options: ["in", "on", "at", "by"], answer: 0 },
+                { unit: "Unit 10", q: "Complete: 'The party is ___ Friday.'", options: ["in", "on", "at", "to"], answer: 1 },
+                { unit: "Unit 10", q: "Choose the preposition: 'I wake up ___ 7 o'clock.'", options: ["in", "on", "at", "under"], answer: 2 },
+                { unit: "Unit 10", q: "Complete: 'We sleep ___ night.'", options: ["in", "on", "at", "by"], answer: 2 },
+                { unit: "Unit 10", q: "Choose the option: 'It is cold ___ winter.'", options: ["in", "on", "at", "to"], answer: 0 },
+                { unit: "Unit 11", q: "Choose the preposition: 'The cat is ___ the table (tagida).'", options: ["in", "on", "under", "at"], answer: 2 },
+                { unit: "Unit 11", q: "Complete: 'The ball is ___ the box (ichida).'", options: ["in", "on", "at", "under"], answer: 0 },
+                { unit: "Unit 11", q: "Choose the option: 'The picture is ___ the wall.'", options: ["in", "on", "at", "under"], answer: 1 },
+                { unit: "Unit 11", q: "Complete: 'He is waiting ___ the bus stop.'", options: ["in", "on", "at", "under"], answer: 2 },
+                { unit: "Unit 11", q: "Choose the option: 'The pen is ___ the desk.'", options: ["in", "on", "at", "under"], answer: 1 },
+                { unit: "Unit 12", q: "Choose comparative: 'An elephant is ___ than a dog.'", options: ["big", "bigger", "biggest", "more big"], answer: 1 },
+                { unit: "Unit 12", q: "Complete: 'A car is ___ than a bike.'", options: ["fast", "faster", "fastest", "more fast"], answer: 1 },
+                { unit: "Unit 12", q: "Choose comparative: 'A mouse is ___ than a cat.'", options: ["small", "smaller", "smallest", "more small"], answer: 1 },
+                { unit: "Unit 12", q: "Complete: 'This book is ___ than that one.'", options: ["good", "better", "best", "more good"], answer: 1 },
+                { unit: "Unit 12", q: "Choose comparative: 'Summer is ___ than winter.'", options: ["hot", "hotter", "hottest", "more hot"], answer: 1 },
+                { unit: "Unit 13", q: "Choose past form: 'I ___ at home yesterday.'", options: ["was", "were", "is", "are"], answer: 0 },
+                { unit: "Unit 13", q: "Complete: 'They ___ happy last week.'", options: ["was", "were", "is", "are"], answer: 1 },
+                { unit: "Unit 13", q: "Choose past form: 'She ___ in London in 2010.'", options: ["was", "were", "is", "are"], answer: 0 },
+                { unit: "Unit 13", q: "Complete: 'We ___ tired yesterday.'", options: ["was", "were", "is", "are"], answer: 1 },
+                { unit: "Unit 13", q: "Choose past form: 'He ___ a good student.'", options: ["was", "were", "is", "are"], answer: 0 },
+                { unit: "Unit 14", q: "Choose past simple of 'play':", options: ["playd", "played", "playing", "plays"], answer: 1 },
+                { unit: "Unit 14", q: "Complete: 'She ___ TV yesterday.'", options: ["watch", "watched", "watching", "watches"], answer: 1 },
+                { unit: "Unit 14", q: "Choose past form of 'listen':", options: ["listend", "listened", "listening", "listen"], answer: 1 },
+                { unit: "Unit 14", q: "Complete: 'They ___ football last Sunday.'", options: ["play", "played", "playing", "plays"], answer: 1 },
+                { unit: "Unit 14", q: "Choose past form of 'clean':", options: ["cleand", "cleaned", "cleaning", "cleans"], answer: 1 },
+                { unit: "Unit 15", q: "What is the past simple of 'go'?", options: ["goed", "went", "gone", "going"], answer: 1 },
+                { unit: "Unit 15", q: "Choose past form of 'see':", options: ["seed", "saw", "seen", "seeing"], answer: 1 },
+                { unit: "Unit 15", q: "Complete: 'He ___ an apple.'", options: ["eat", "ate", "eaten", "eating"], answer: 1 },
+                { unit: "Unit 15", q: "Choose past form of 'have':", options: ["haived", "had", "has", "haven"], answer: 1 },
+                { unit: "Unit 15", q: "Complete: 'She ___ a new book.'", options: ["buy", "bought", "buying", "buys"], answer: 1 },
+                { unit: "Unit 16", q: "Choose future form: 'I think it ___ rain tomorrow.'", options: ["will", "is", "going to", "was"], answer: 0 },
+                { unit: "Unit 16", q: "Complete: 'She ___ visit her grandma soon.'", options: ["will", "is", "was", "did"], answer: 0 },
+                { unit: "Unit 16", q: "Choose future form: 'They ___ come tomorrow.'", options: ["will", "are", "were", "did"], answer: 0 },
+                { unit: "Unit 16", q: "Complete: 'He ___ help you.'", options: ["will", "is", "was", "does"], answer: 0 },
+                { unit: "Unit 16", q: "Choose future form: 'We ___ win the game.'", options: ["will", "are", "were", "did"], answer: 0 },
+                { unit: "Unit 17", q: "Choose option: 'I have ___ apples.'", options: ["some", "any", "a", "an"], answer: 0 },
+                { unit: "Unit 17", q: "Complete: 'There is ___ water in the glass.'", options: ["some", "any", "a", "an"], answer: 0 },
+                { unit: "Unit 17", q: "Choose option: 'She has ___ friends.'", options: ["some", "any", "a", "an"], answer: 0 },
+                { unit: "Unit 17", q: "Complete: 'We need ___ bread.'", options: ["some", "any", "a", "an"], answer: 0 },
+                { unit: "Unit 17", q: "Choose option: 'I bought ___ books.'", options: ["some", "any", "a", "an"], answer: 0 },
+                { unit: "Unit 18", q: "Choose obligation: 'You ___ obey school rules.'", options: ["must", "mustn't", "can", "don't"], answer: 0 },
+                { unit: "Unit 18", q: "Complete: 'It's raining. I ___ take an umbrella.'", options: ["must", "mustn't", "can", "don't"], answer: 0 },
+                { unit: "Unit 18", q: "Choose option: 'You ___ do your homework.'", options: ["must", "mustn't", "can", "don't"], answer: 0 },
+                { unit: "Unit 18", q: "Complete: 'Students ___ listen to the teacher.'", options: ["must", "mustn't", "can", "don't"], answer: 0 },
+                { unit: "Unit 18", q: "Choose option: 'We ___ respect elders.'", options: ["must", "mustn't", "can", "don't"], answer: 0 },
+                { unit: "Unit 19", q: "Choose conjunction: 'I like apples ___ bananas.'", options: ["and", "but", "because", "so"], answer: 0 },
+                { unit: "Unit 19", q: "Complete: 'He likes football ___ tennis.'", options: ["and", "but", "because", "so"], answer: 0 },
+                { unit: "Unit 19", q: "Choose conjunction: 'She has a pen ___ a pencil.'", options: ["and", "but", "because", "so"], answer: 0 },
+                { unit: "Unit 19", q: "Complete: 'Cats love fish ___ milk.'", options: ["and", "but", "because", "so"], answer: 0 },
+                { unit: "Unit 19", q: "Choose conjunction: 'I can read ___ write.'", options: ["and", "but", "because", "so"], answer: 0 }
+            ],
+            medium: [
+                { unit: "Unit 1", q: "Complete the sentence: 'We ___ students.'", options: ["am", "is", "are", "be"], answer: 2 },
+                { unit: "Unit 1", q: "Choose the correct form: 'You ___ a smart boy.'", options: ["am", "is", "are", "be"], answer: 2 },
+                { unit: "Unit 1", q: "Complete: 'It ___ a cold day.'", options: ["am", "is", "are", "be"], answer: 1 },
+                { unit: "Unit 1", q: "Choose the correct option: 'My parents ___ doctors.'", options: ["am", "is", "are", "be"], answer: 2 },
+                { unit: "Unit 1", q: "Complete: 'The dog ___ black.'", options: ["am", "is", "are", "be"], answer: 1 },
+                { unit: "Unit 1", q: "Complete: 'Tom and Jerry ___ friends.'", options: ["am", "is", "are", "be"], answer: 2 },
+                { unit: "Unit 2", q: "Choose the correct plural form of 'baby':", options: ["babys", "babies", "baby", "babiez"], answer: 1 },
+                { unit: "Unit 2", q: "What is the plural of 'bus'?", options: ["buses", "buss", "bux", "busies"], answer: 0 },
+                { unit: "Unit 2", q: "Choose the plural form of 'box':", options: ["boxs", "boxes", "boxies", "boxen"], answer: 1 },
+                { unit: "Unit 2", q: "What is the plural of 'party'?", options: ["partys", "parties", "party", "partiez"], answer: 1 },
+                { unit: "Unit 2", q: "Choose the plural form of 'watch':", options: ["watchs", "watches", "watchies", "watchn"], answer: 1 },
+                { unit: "Unit 2", q: "Choose plural form of 'glass':", options: ["glasses", "glass", "glassies", "glassis"], answer: 0 },
+                { unit: "Unit 3", q: "Choose the correct article: 'He has got ___ dog.'", options: ["an", "a", "the", "-"], answer: 1 },
+                { unit: "Unit 3", q: "Complete: 'She is ___ honest girl.'", options: ["a", "an", "the", "-"], answer: 1 },
+                { unit: "Unit 3", q: "Choose the article: 'This is ___ university.'", options: ["a", "an", "the", "-"], answer: 0 },
+                { unit: "Unit 3", q: "Complete: 'I have ___ umbrella.'", options: ["a", "an", "the", "-"], answer: 1 },
+                { unit: "Unit 3", q: "Choose the article: 'He is ___ old man.'", options: ["a", "an", "the", "-"], answer: 1 },
+                { unit: "Unit 3", q: "Complete: 'This is ___ nice car.'", options: ["a", "an", "the", "-"], answer: 0 },
+                { unit: "Unit 4", q: "What is the plural form of 'This'?", options: ["That", "These", "Those", "Them"], answer: 1 },
+                { unit: "Unit 4", q: "What is the plural form of 'That'?", options: ["This", "These", "Those", "Them"], answer: 2 },
+                { unit: "Unit 4", q: "Choose the correct option: '___ is my house over there.'", options: ["This", "That", "These", "Those"], answer: 1 },
+                { unit: "Unit 4", q: "Complete: '___ are my shoes here.'", options: ["This", "That", "These", "Those"], answer: 2 },
+                { unit: "Unit 4", q: "Choose option: '___ is a nice picture.'", options: ["This", "That", "These", "Those"], answer: 0 },
+                { unit: "Unit 4", q: "Complete: '___ are my pencils.'", options: ["This", "That", "These", "Those"], answer: 2 },
+                { unit: "Unit 5", q: "Choose the correct form: 'She ___ got a new car.'", options: ["have", "has", "is", "are"], answer: 1 },
+                { unit: "Unit 5", q: "Complete the question: '___ you got a pen?'", options: ["Do", "Are", "Have", "Has"], answer: 2 },
+                { unit: "Unit 5", q: "Choose the correct form: 'He ___ got a brother.'", options: ["have", "has", "is", "are"], answer: 1 },
+                { unit: "Unit 5", q: "Complete the question: '___ she got a cat?'", options: ["Do", "Are", "Have", "Has"], answer: 3 },
+                { unit: "Unit 5", q: "Choose the form: 'They ___ got a big garden.'", options: ["have", "has", "is", "are"], answer: 0 },
+                { unit: "Unit 6", q: "Complete: 'Birds can fly, but humans ___ fly.'", options: ["can", "can't", "are", "do"], answer: 1 },
+                { unit: "Unit 6", q: "Choose the correct question: '___ you speak English?'", options: ["Are", "Do", "Can", "Have"], answer: 2 },
+                { unit: "Unit 6", q: "Complete: 'He is 1 year old, so he ___ walk yet.'", options: ["can", "can't", "is", "has"], answer: 1 },
+                { unit: "Unit 6", q: "Choose short answer: 'Can she swim? - Yes, she ___.'", options: ["can", "can't", "is", "does"], answer: 0 },
+                { unit: "Unit 6", q: "Complete: 'Fish can swim, but they ___ walk.'", options: ["can", "can't", "are", "do"], answer: 1 },
+                { unit: "Unit 7", q: "Choose the negative imperative: '___ run in the classroom!'", options: ["Don't", "No", "Aren't", "Can't"], answer: 0 },
+                { unit: "Unit 7", q: "Complete with 'Let's': '___ go to the park!'", options: ["Let", "Let's", "Lets", "To"], answer: 1 },
+                { unit: "Unit 7", q: "Choose negative command: '___ touch the hot stove!'", options: ["Not", "Don't", "No", "Aren't"], answer: 1 },
+                { unit: "Unit 7", q: "Complete: '___ talk during the lesson!'", options: ["Don't", "Not", "No", "Aren't"], answer: 0 },
+                { unit: "Unit 7", q: "Choose command: 'Let's ___ football.'", options: ["play", "playing", "plays", "played"], answer: 0 },
+                { unit: "Unit 8", q: "Complete: 'What ___ you doing at the moment?'", options: ["is", "are", "do", "does"], answer: 1 },
+                { unit: "Unit 8", q: "Negative form: 'They ___ listening to music right now.'", options: ["isn't", "aren't", "don't", "haven't"], answer: 1 },
+                { unit: "Unit 8", q: "Complete: 'Listen! The baby ___ crying.'", options: ["is", "are", "am", "be"], answer: 0 },
+                { unit: "Unit 8", q: "Choose form: 'She ___ reading a book now.'", options: ["is not", "are not", "do not", "does not"], answer: 0 },
+                { unit: "Unit 8", q: "Complete question: '___ he running?'", options: ["Is", "Are", "Do", "Does"], answer: 0 },
+                { unit: "Unit 9", q: "Complete: 'He ___ to school by bus.'", options: ["go", "goes", "going", "gone"], answer: 1 },
+                { unit: "Unit 9", q: "Choose negative: 'She ___ like milk.'", options: ["don't", "doesn't", "isn't", "aren't"], answer: 1 },
+                { unit: "Unit 9", q: "Complete question: '___ you speak English?'", options: ["Does", "Are", "Do", "Is"], answer: 2 },
+                { unit: "Unit 9", q: "Choose form: 'They ___ football on Sundays.'", options: ["plays", "play", "playing", "played"], answer: 1 },
+                { unit: "Unit 9", q: "Complete negative: 'I ___ like getting up early.'", options: ["don't", "doesn't", "isn't", "aren't"], answer: 0 },
+                { unit: "Unit 10", q: "Complete: 'The party is ___ Friday.'", options: ["in", "on", "at", "to"], answer: 1 },
+                { unit: "Unit 10", q: "Choose preposition: 'I wake up ___ 7 o'clock.'", options: ["in", "on", "at", "under"], answer: 2 },
+                { unit: "Unit 10", q: "Complete: 'We sleep ___ night.'", options: ["in", "on", "at", "by"], answer: 2 },
+                { unit: "Unit 10", q: "Choose preposition: 'My birthday is ___ May.'", options: ["in", "on", "at", "by"], answer: 0 },
+                { unit: "Unit 10", q: "Complete: 'The shop opens ___ Monday morning.'", options: ["in", "on", "at", "to"], answer: 1 },
+                { unit: "Unit 11", q: "Complete: 'The books are ___ the bag (ichida).'", options: ["in", "on", "at", "under"], answer: 0 },
+                { unit: "Unit 11", q: "Choose option: 'The picture is ___ the wall.'", options: ["in", "on", "at", "under"], answer: 1 },
+                { unit: "Unit 11", q: "Complete: 'He is waiting ___ the bus stop.'", options: ["in", "on", "at", "under"], answer: 2 },
+                { unit: "Unit 11", q: "Choose option: 'The dog is ___ the table.'", options: ["in", "on", "under", "at"], answer: 2 },
+                { unit: "Unit 11", q: "Complete: 'The keys are ___ my pocket.'", options: ["in", "on", "at", "under"], answer: 0 },
+                { unit: "Unit 12", q: "Complete: 'Mount Everest is the ___ mountain.'", options: ["high", "higher", "highest", "more high"], answer: 2 },
+                { unit: "Unit 12", q: "Choose comparative: 'A car is ___ than a bicycle.'", options: ["fast", "faster", "fastest", "more fast"], answer: 1 },
+                { unit: "Unit 12", q: "Complete superlative: 'This is the ___ test.'", options: ["easy", "easier", "easiest", "more easy"], answer: 2 },
+                { unit: "Unit 12", q: "Choose form: 'My room is ___ than yours.'", options: ["clean", "cleaner", "cleanest", "more clean"], answer: 1 },
+                { unit: "Unit 12", q: "Complete: 'He is the ___ boy in the class.'", options: ["tall", "taller", "tallest", "more tall"], answer: 2 },
+                { unit: "Unit 13", q: "Complete: 'They ___ happy with the results.'", options: ["was", "were", "is", "are"], answer: 1 },
+                { unit: "Unit 13", q: "Choose negative past: 'He ___ at school last Monday.'", options: ["wasn't", "weren't", "isn't", "don't"], answer: 0 },
+                { unit: "Unit 13", q: "Complete question: '___ you tired last night?'", options: ["Was", "Were", "Did", "Are"], answer: 1 },
+                { unit: "Unit 13", q: "Choose past form: 'She ___ born in 2012.'", options: ["was", "were", "is", "did"], answer: 0 },
+                { unit: "Unit 13", q: "Complete negative: 'We ___ at home yesterday.'", options: ["wasn't", "weren't", "isn't", "aren't"], answer: 1 },
+                { unit: "Unit 14", q: "Complete: 'She ___ TV last night.'", options: ["watch", "watched", "watching", "watches"], answer: 1 },
+                { unit: "Unit 14", q: "Choose negative past: 'I ___ visit my grandma yesterday.'", options: ["didn't", "haven't", "wasn't", "don't"], answer: 0 },
+                { unit: "Unit 14", q: "Complete question: '___ you clean your room?'", options: ["Do", "Did", "Were", "Have"], answer: 1 },
+                { unit: "Unit 14", q: "Choose past form: 'They ___ football yesterday.'", options: ["play", "played", "playing", "plays"], answer: 1 },
+                { unit: "Unit 14", q: "Complete negative: 'He ___ like the movie.'", options: ["didn't", "wasn't", "doesn't", "haven't"], answer: 0 },
+                { unit: "Unit 15", q: "Choose past form of 'see':", options: ["seed", "saw", "seen", "seeing"], answer: 1 },
+                { unit: "Unit 15", q: "Complete: 'He ___ an apple for lunch yesterday.'", options: ["eat", "ate", "eaten", "eating"], answer: 1 },
+                { unit: "Unit 15", q: "What is the past form of 'have'?", options: ["haived", "had", "has", "haven"], answer: 1 },
+                { unit: "Unit 15", q: "Choose past form of 'buy':", options: ["buyed", "bought", "brought", "buying"], answer: 1 },
+                { unit: "Unit 15", q: "Complete: 'She ___ to London last year.'", options: ["go", "went", "gone", "going"], answer: 1 },
+                { unit: "Unit 16", q: "Complete with 'be going to': 'She ___ visit her aunt next week.'", options: ["is going to", "will", "goes", "went"], answer: 0 },
+                { unit: "Unit 16", q: "Choose question form: '___ you help me?'", options: ["Are", "Will", "Do", "Did"], answer: 1 },
+                { unit: "Unit 16", q: "Choose option: 'Look at clouds! It ___ rain.'", options: ["will", "is going to", "is", "rains"], answer: 1 },
+                { unit: "Unit 16", q: "Complete: 'They ___ buy a new car soon.'", options: ["are going to", "will", "is", "went"], answer: 0 },
+                { unit: "Unit 16", q: "Choose future form: 'I think he ___ pass the test.'", options: ["will", "is", "going to", "was"], answer: 0 },
+                { unit: "Unit 17", q: "Complete negative sentence: 'We don't have ___ milk left.'", options: ["some", "any", "a", "an"], answer: 1 },
+                { unit: "Unit 17", q: "Complete question: 'Are there ___ students in the room?'", options: ["some", "any", "a", "much"], answer: 1 },
+                { unit: "Unit 17", q: "Which of these is uncountable?", options: ["apple", "water", "chair", "book"], answer: 1 },
+                { unit: "Unit 17", q: "Complete negative: 'I don't have ___ money.'", options: ["some", "any", "a", "an"], answer: 1 },
+                { unit: "Unit 17", q: "Choose option: 'Is there ___ juice in the fridge?'", options: ["some", "any", "a", "an"], answer: 1 },
+                { unit: "Unit 18", q: "Complete prohibition: 'You ___ park here. It is forbidden.'", options: ["must", "mustn't", "can", "have to"], answer: 1 },
+                { unit: "Unit 18", q: "Complete: 'You ___ talk during the exam.'", options: ["must", "mustn't", "can", "will"], answer: 1 },
+                { unit: "Unit 18", q: "Choose option: 'Students ___ wear uniform.'", options: ["must", "mustn't", "can't", "no"], answer: 0 },
+                { unit: "Unit 18", q: "Complete prohibition: 'You ___ touch this wire.'", options: ["must", "mustn't", "can", "have to"], answer: 1 },
+                { unit: "Unit 18", q: "Choose obligation: 'We ___ clean our room.'", options: ["must", "mustn't", "can't", "don't"], answer: 0 },
+                { unit: "Unit 19", q: "Complete: 'I wanted to go out, ___ it was raining.'", options: ["and", "but", "because", "so"], answer: 1 },
+                { unit: "Unit 19", q: "Choose option: 'She was tired, ___ she went to bed early.'", options: ["because", "so", "but", "and"], answer: 1 },
+                { unit: "Unit 19", q: "Complete: 'He stayed at home ___ he was sick.'", options: ["because", "so", "but", "and"], answer: 0 },
+                { unit: "Unit 19", q: "Choose conjunction: 'I can speak English ___ I can't speak French.'", options: ["and", "but", "because", "so"], answer: 1 },
+                { unit: "Unit 19", q: "Complete: 'It was cold, ___ I wore a jacket.'", options: ["because", "so", "but", "and"], answer: 1 }
+            ],
+            hard: [
+                { unit: "Unit 1", q: "What is the short form of 'They are'?", options: ["Theirs", "They're", "Their", "Theym"], answer: 1 },
+                { unit: "Unit 1", q: "Choose correct contraction: 'He is not' $\rightarrow$", options: ["He'sn't", "He isn't", "He'not", "Isnot he"], answer: 1 },
+                { unit: "Unit 1", q: "Choose short form: 'We are not' $\rightarrow$", options: ["We'ren't", "We aren't", "Aren't we", "We'not"], answer: 1 },
+                { unit: "Unit 1", q: "Complete: 'Who ___ you?'", options: ["am", "is", "are", "be"], answer: 2 },
+                { unit: "Unit 1", q: "Choose correct form: 'My brother and I ___ students.'", options: ["am", "is", "are", "be"], answer: 2 },
+                { unit: "Unit 1", q: "Choose correct negative: 'I am not late' $\rightarrow$ Short form:", options: ["I'ren't", "I'm not", "I amn't", "Amnot I"], answer: 1 },
+                { unit: "Unit 2", q: "What is the irregular plural form of 'child'?", options: ["childs", "children", "childes", "child"], answer: 1 },
+                { unit: "Unit 2", q: "What is the plural form of 'man'?", options: ["mans", "men", "menes", "manz"], answer: 1 },
+                { unit: "Unit 2", q: "What is the plural form of 'tooth'?", options: ["tooths", "teeth", "toothes", "teeths"], answer: 1 },
+                { unit: "Unit 2", q: "What is the plural form of 'foot'?", options: ["foots", "feet", "feets", "footz"], answer: 1 },
+                { unit: "Unit 2", q: "What is the plural form of 'mouse'?", options: ["mouses", "mice", "mices", "mouse"], answer: 1 },
+                { unit: "Unit 2", q: "What is irregular plural of 'woman'?", options: ["womans", "women", "womens", "womanz"], answer: 1 },
+                { unit: "Unit 3", q: "Choose the correct article: 'She is ___ honest girl.'", options: ["a", "an", "the", "-"], answer: 1 },
+                { unit: "Unit 3", q: "Choose article: 'He is ___ university professor.'", options: ["a", "an", "the", "-"], answer: 0 },
+                { unit: "Unit 3", q: "Complete: 'I saw ___ European man at the station.'", options: ["a", "an", "the", "-"], answer: 0 },
+                { unit: "Unit 3", q: "Choose article: 'It was ___ unusual story.'", options: ["a", "an", "the", "-"], answer: 1 },
+                { unit: "Unit 3", q: "Complete: 'She plays ___ piano very well.'", options: ["a", "an", "the", "-"], answer: 2 },
+                { unit: "Unit 3", q: "Choose article: 'He arrived in ___ United States.'", options: ["a", "an", "the", "-"], answer: 2 },
+                { unit: "Unit 4", q: "Look at stars far away: '___ are bright stars.'", options: ["This", "That", "These", "Those"], answer: 3 },
+                { unit: "Unit 4", q: "Choose correct demonstrative: 'Who is ___ man over there?'", options: ["this", "that", "these", "those"], answer: 1 },
+                { unit: "Unit 4", q: "Complete: 'Are ___ your keys in my hand?'", options: ["this", "that", "these", "those"], answer: 2 },
+                { unit: "Unit 4", q: "Choose correct option: '___ flowers here are for you.'", options: ["This", "That", "These", "Those"], answer: 1 },
+                { unit: "Unit 4", q: "Complete: 'Look at ___ birds flying far away.'", options: ["this", "that", "these", "those"], answer: 3 },
+                { unit: "Unit 4", q: "Choose correct demonstrative: '___ book in my hand is interesting.'", options: ["This", "That", "These", "Those"], answer: 0 },
+                { unit: "Unit 5", q: "Choose the negative form: 'He ___ got a computer.'", options: ["haven't", "hasn't", "isn't", "don't"], answer: 1 },
+                { unit: "Unit 5", q: "Choose negative form: 'I ___ got any brothers.'", options: ["haven't", "hasn't", "am not", "don't"], answer: 0 },
+                { unit: "Unit 5", q: "Complete short answer: 'Have you got a car? - Yes, I ___.'", options: ["have", "got", "do", "am"], answer: 0 },
+                { unit: "Unit 5", q: "Complete short answer: 'Has she got a pen? - No, she ___.'", options: ["haven't", "hasn't", "doesn't", "isn't"], answer: 1 },
+                { unit: "Unit 5", q: "Choose correct structure: '___ your friend got a bike?'", options: ["Have", "Has", "Is", "Does"], answer: 1 },
+                { unit: "Unit 6", q: "Choose the correct question form: '___ you speak English?'", options: ["Are", "Do", "Can", "Have"], answer: 2 },
+                { unit: "Unit 6", q: "Choose correct modal structure: 'She can ___ very fast.'", options: ["runs", "run", "running", "to run"], answer: 1 },
+                { unit: "Unit 6", q: "Choose negative ability: 'He ___ swim because he is afraid.'", options: ["can", "can't", "is", "does"], answer: 1 },
+                { unit: "Unit 6", q: "Complete question: '___ birds fly? - Yes, they can.'", options: ["Can", "Are", "Do", "Have"], answer: 0 },
+                { unit: "Unit 6", q: "Choose correct form: 'Can you help me? - Sorry, I ___.'", options: ["can", "can't", "do", "don't"], answer: 1 },
+                { unit: "Unit 7", q: "Complete with 'Let's': '___ go to the park!'", options: ["Let", "Let's", "Lets", "To"], answer: 1 },
+                { unit: "Unit 7", q: "Choose negative suggestion: '___ not be late!'", options: ["Let's", "Lets", "Let", "Do"], answer: 0 },
+                { unit: "Unit 7", q: "Complete command: 'Always ___ the truth.'", options: ["tell", "telling", "tells", "told"], answer: 0 },
+                { unit: "Unit 7", q: "Choose negative imperative: '___ ever do that again!'", options: ["Don't", "Never", "No", "Not"], answer: 1 },
+                { unit: "Unit 7", q: "Complete: 'Let us ___ our work now.'", options: ["finish", "finishing", "finishes", "finished"], answer: 0 },
+                { unit: "Unit 8", q: "Choose the correct spelling with -ing: 'swim'", options: ["swiming", "swimming", "swimng", "swimm"], answer: 1 },
+                { unit: "Unit 8", q: "Choose spelling with -ing: 'write'", options: ["writeing", "writting", "writing", "writng"], answer: 2 },
+                { unit: "Unit 8", q: "Choose spelling with -ing: 'sit'", options: ["siting", "sitting", "sitng", "sittng"], answer: 1 },
+                { unit: "Unit 8", q: "Choose spelling with -ing: 'dance'", options: ["danceing", "dancng", "dancing", "dansing"], answer: 2 },
+                { unit: "Unit 8", q: "Choose spelling with -ing: 'run'", options: ["runing", "running", "runng", "runn"], answer: 1 },
+                { unit: "Unit 9", q: "Choose the correct negative form: 'She ___ like milk.'", options: ["don't", "doesn't", "isn't", "aren't"], answer: 1 },
+                { unit: "Unit 9", q: "Choose correct form: 'He ___ up at 7:00 every day.'", options: ["get", "gets", "getting", "got"], answer: 1 },
+                { unit: "Unit 9", q: "Complete question: '___ your father work here?'", options: ["Do", "Does", "Is", "Has"], answer: 1 },
+                { unit: "Unit 9", q: "Choose negative form: 'We ___ watch TV in the morning.'", options: ["don't", "doesn't", "aren't", "haven't"], answer: 0 },
+                { unit: "Unit 9", q: "Complete: 'She usually ___ to work by bus.'", options: ["go", "goes", "going", "gone"], answer: 1 },
+                { unit: "Unit 10", q: "Choose the preposition: 'I wake up ___ 7 o'clock.'", options: ["in", "on", "at", "under"], answer: 2 },
+                { unit: "Unit 10", q: "Choose preposition: 'The meeting is ___ Monday afternoon.'", options: ["in", "on", "at", "by"], answer: 1 },
+                { unit: "Unit 10", q: "Complete: 'We often travel ___ summer.'", options: ["in", "on", "at", "to"], answer: 0 },
+                { unit: "Unit 10", q: "Choose preposition: 'He was born ___ 15th of June.'", options: ["in", "on", "at", "by"], answer: 1 },
+                { unit: "Unit 10", q: "Complete: 'I will see you ___ the weekend.'", options: ["in", "on", "at", "by"], answer: 2 },
+                { unit: "Unit 11", q: "Choose the option: 'The dog is sitting ___ me and you (orasida).'", options: ["between", "in", "on", "at"], answer: 0 },
+                { unit: "Unit 11", q: "Complete: 'Our house is ___ the bank and the park.'", options: ["between", "among", "in", "on"], answer: 0 },
+                { unit: "Unit 11", q: "Choose preposition: 'The plane flew ___ the clouds.'", options: ["above", "on", "in", "at"], answer: 0 },
+                { unit: "Unit 11", q: "Complete: 'He walked ___ the bridge.'", options: ["across", "in", "on", "at"], answer: 0 },
+                { unit: "Unit 11", q: "Choose option: 'The keys are hidden ___ the book.'", options: ["under", "in", "on", "at"], answer: 0 },
+                { unit: "Unit 12", q: "What is the superlative form of 'good'?", options: ["gooder", "best", "goodest", "better"], answer: 1 },
+                { unit: "Unit 12", q: "What is the comparative form of 'bad'?", options: ["badder", "worse", "worst", "more bad"], answer: 1 },
+                { unit: "Unit 12", q: "Choose superlative form of 'bad':", options: ["badder", "worse", "worst", "most bad"], answer: 2 },
+                { unit: "Unit 12", q: "Choose comparative form of 'far':", options: ["farrer", "further", "furthest", "more far"], answer: 1 },
+                { unit: "Unit 12", q: "Complete: 'This test is ___ than the previous one.'", options: ["difficult", "more difficult", "most difficult", "difficulter"], answer: 1 },
+                { unit: "Unit 13", q: "Choose the negative past form: 'He ___ at school last Monday.'", options: ["wasn't", "weren't", "isn't", "don't"], answer: 0 },
+                { unit: "Unit 13", q: "Choose negative past form: 'They ___ at the party.'", options: ["wasn't", "weren't", "didn't", "aren't"], answer: 1 },
+                { unit: "Unit 13", q: "Complete question: '___ she at home yesterday?'", options: ["Was", "Were", "Did", "Is"], answer: 0 },
+                { unit: "Unit 13", q: "Choose correct past form: 'Where ___ you born?'", options: ["was", "were", "did", "are"], answer: 1 },
+                { unit: "Unit 13", q: "Complete: 'I ___ happy when I heard the news.'", options: ["was", "were", "did", "am"], answer: 0 },
+                { unit: "Unit 14", q: "Choose the negative past form: 'I ___ visit my grandma yesterday.'", options: ["didn't", "haven't", "wasn't", "don't"], answer: 0 },
+                { unit: "Unit 14", q: "Complete question: '___ you finish your homework?'", options: ["Do", "Did", "Were", "Have"], answer: 1 },
+                { unit: "Unit 14", q: "Choose correct past form: 'She ___ not like the soup.'", options: ["did", "was", "does", "had"], answer: 0 },
+                { unit: "Unit 14", q: "Complete: 'What time ___ you arrive home?'", options: ["do", "did", "were", "have"], answer: 1 },
+                { unit: "Unit 14", q: "Choose correct negative: 'They ___ play football last week.'", options: ["didn't", "weren't", "don't", "haven't"], answer: 0 },
+                { unit: "Unit 15", q: "Choose the past simple form of 'buy':", options: ["buyed", "bought", "brought", "buying"], answer: 1 },
+                { unit: "Unit 15", q: "Choose past simple of 'catch':", options: ["catched", "caught", "cotch", "catching"], answer: 1 },
+                { unit: "Unit 15", q: "Choose past simple of 'write':", options: ["writed", "wrote", "written", "writing"], answer: 1 },
+                { unit: "Unit 15", q: "Choose past simple of 'speak':", options: ["speaked", "spoke", "spoken", "speaking"], answer: 1 },
+                { unit: "Unit 15", q: "Choose past simple of 'swim':", options: ["swam", "swum", "swimmed", "swimming"], answer: 0 },
+                { unit: "Unit 16", q: "Choose the negative future form: 'We ___ not go to the party tomorrow.'", options: ["will", "are", "do", "did"], answer: 0 },
+                { unit: "Unit 16", q: "Complete negative with 'be going to': 'He ___ not going to travel.'", options: ["is", "will", "does", "did"], answer: 0 },
+                { unit: "Unit 16", q: "Choose correct question: '___ it rain tomorrow?'", options: ["Will", "Is", "Does", "Did"], answer: 0 },
+                { unit: "Unit 16", q: "Complete: 'I promise I ___ tell anyone.'", options: ["won't", "will not", "am not", "don't"], answer: 0 },
+                { unit: "Unit 16", q: "Choose correct future form: 'Look at the schedule, the train ___ leave at 5 PM.'", options: ["will", "is going to", "is", "goes"], answer: 3 },
+                { unit: "Unit 17", q: "Which of these words is uncountable?", options: ["apple", "water", "chair", "book"], answer: 1 },
+                { unit: "Unit 17", q: "Which of these is countable?", options: ["milk", "bread", "banana", "rice"], answer: 2 },
+                { unit: "Unit 17", q: "Choose correct option for uncountable noun: 'Can I have ___ sugar?'", options: ["a", "an", "some", "many"], answer: 2 },
+                { unit: "Unit 17", q: "Complete: 'How ___ water is in the bottle?'", options: ["many", "much", "few", "any"], answer: 1 },
+                { unit: "Unit 17", q: "Complete: 'How ___ apples do you have?'", options: ["much", "many", "some", "any"], answer: 1 },
+                { unit: "Unit 18", q: "Choose the option: 'It's raining. I ___ take an umbrella.'", options: ["must", "mustn't", "can't", "aren't"], answer: 0 },
+                { unit: "Unit 18", q: "Choose prohibition: 'You ___ smoke in the hospital.'", options: ["must", "mustn't", "can", "have to"], answer: 1 },
+                { unit: "Unit 18", q: "Complete: 'I ___ finish this report today.'", options: ["must", "mustn't", "can't", "don't"], answer: 0 },
+                { unit: "Unit 18", q: "Choose correct rule: 'Drivers ___ stop at the red light.'", options: ["must", "mustn't", "can", "don't"], answer: 0 },
+                { unit: "Unit 18", q: "Complete: 'You ___ feed the animals at the zoo (taqiqlangan).'", options: ["must", "mustn't", "can", "have to"], answer: 1 },
+                { unit: "Unit 19", q: "Choose the conjunction: 'She was tired, ___ she went to bed early.'", options: ["because", "so", "but", "and"], answer: 1 },
+                { unit: "Unit 19", q: "Complete: 'I missed the bus ___ I woke up late.'", options: ["because", "so", "but", "and"], answer: 0 },
+                { unit: "Unit 19", q: "Choose conjunction: 'It was expensive, ___ I didn't buy it.'", options: ["because", "so", "but", "and"], answer: 1 },
+                { unit: "Unit 19", q: "Complete: 'He studied hard ___ he passed the exam.'", options: ["because", "so", "but", "and"], answer: 1 },
+                { unit: "Unit 19", q: "Choose conjunction: 'I like tea, ___ my brother likes coffee.'", options: ["because", "so", "but", "and"], answer: 2 }
+            ]
+        };
 
-            // Unit 2: Plurals (-s / -es)
-            { unit: "Unit 2", q: "What is the plural form of 'book'?", options: ["bookes", "books", "booki", "bookz"], answer: 1 },
-            { unit: "Unit 2", q: "Choose the correct plural form of 'bus':", options: ["buses", "buss", "bux", "busies"], answer: 0 },
-            { unit: "Unit 2", q: "What is the plural of 'baby'?", options: ["babys", "babies", "baby", "babiez"], answer: 1 },
-            { unit: "Unit 2", q: "Choose the correct plural form of 'box':", options: ["boxs", "boxes", "boxies", "boxen"], answer: 1 },
-            { unit: "Unit 2", q: "What is the plural form of 'child'?", options: ["childs", "children", "childes", "child"], answer: 1 },
-
-            // Unit 3: Articles (A / An)
-            { unit: "Unit 3", q: "Choose the correct article: '___ apple a day keeps the doctor away.'", options: ["A", "An", "The", "-"], answer: 1 },
-            { unit: "Unit 3", q: "Choose the correct article: 'He has got ___ dog.'", options: ["an", "a", "the", "-"], answer: 1 },
-            { unit: "Unit 3", q: "Choose the correct article: 'She is ___ honest girl.'", options: ["a", "an", "the", "-"], answer: 1 },
-            { unit: "Unit 3", q: "Choose the correct option: 'I saw ___ elephant at the zoo.'", options: ["a", "an", "the", "some"], answer: 1 },
-            { unit: "Unit 3", q: "Choose the correct article: 'This is ___ umbrella.'", options: ["a", "an", "the", "some"], answer: 1 },
-
-            // Unit 4: This / That / These / Those
-            { unit: "Unit 4", q: "Look at the book near me. I say: '___ is my book.'", options: ["This", "That", "These", "Those"], answer: 0 },
-            { unit: "Unit 4", q: "Look at the stars far away. '___ are bright stars.'", options: ["This", "That", "These", "Those"], answer: 3 },
-            { unit: "Unit 4", q: "Choose the correct option for a single item far away: '___ is a bird.'", options: ["This", "That", "These", "Those"], answer: 1 },
-            { unit: "Unit 4", q: "Plural form of 'This' is:", options: ["That", "These", "Those", "Them"], answer: 1 },
-            { unit: "Unit 4", q: "Choose the correct option for plural items near me: '___ are my pencils.'", options: ["This", "That", "These", "Those"], answer: 2 },
-
-            // Unit 5: Have got / Has got
-            { unit: "Unit 5", q: "Choose the correct form: 'She ___ got a new car.'", options: ["have", "has", "is", "are"], answer: 1 },
-            { unit: "Unit 5", q: "Complete the sentence: 'I ___ got two brothers.'", options: ["has", "have", "am", "do"], answer: 1 },
-            { unit: "Unit 5", q: "Make it interrogative: '___ you got a pen?'", options: ["Do", "Are", "Have", "Has"], answer: 2 },
-            { unit: "Unit 5", q: "Choose the correct negative form: 'He ___ got a computer.'", options: ["haven't", "hasn't", "isn't", "don't"], answer: 1 },
-            { unit: "Unit 5", q: "Complete: 'They ___ got a big house.'", options: ["has", "have", "are", "is"], answer: 1 },
-
-            // Unit 6: Can / Can't (Ability)
-            { unit: "Unit 6", q: "Choose the correct modal verb for ability: 'A fish ___ swim.'", options: ["can", "can't", "is", "has"], answer: 0 },
-            { unit: "Unit 6", q: "Complete: 'Birds can fly, but humans ___ fly.'", options: ["can", "can't", "are", "do"], answer: 1 },
-            { unit: "Unit 6", q: "Choose the correct question: '___ you speak English?'", options: ["Are", "Do", "Can", "Have"], answer: 2 },
-            { unit: "Unit 6", q: "Complete: 'He is only 1 year old, so he ___ walk yet.'", options: ["can", "can't", "is", "has"], answer: 1 },
-            { unit: "Unit 6", q: "Choose the correct short answer: 'Can she swim? - Yes, she ___.'", options: ["can", "can't", "is", "does"], answer: 0 },
-
-            // Unit 7: Imperatives / Let's
-            { unit: "Unit 7", q: "Choose the correct imperative: '___ the door, please.'", options: ["Opening", "Close", "Closed", "Closes"], answer: 1 },
-            { unit: "Unit 7", q: "Negative imperative: '___ run in the classroom!'", options: ["Don't", "No", "Aren't", "Can't"], answer: 0 },
-            { unit: "Unit 7", q: "Complete with 'Let's': '___ go to the park!'", options: ["Let", "Let's", "Lets", "To"], answer: 1 },
-            { unit: "Unit 7", q: "Choose the correct command: '___ quiet, please.'", options: ["Be", "Is", "Are", "Am"], answer: 0 },
-            { unit: "Unit 7", q: "Choose the negative command: '___ touch the hot stove!'", options: ["Not", "Don't", "No", "Aren't"], answer: 1 },
-
-            // Unit 8: Present Continuous
-            { unit: "Unit 8", q: "Choose the correct form: 'Look! She ___ football now.'", options: ["play", "plays", "is playing", "playing"], answer: 2 },
-            { unit: "Unit 8", q: "Complete: 'What ___ you doing at the moment?'", options: ["is", "are", "do", "does"], answer: 1 },
-            { unit: "Unit 8", q: "Negative form: 'They ___ listening to music right now.'", options: ["isn't", "aren't", "don't", "haven't"], answer: 1 },
-            { unit: "Unit 8", q: "Choose the correct spelling with -ing: 'swim'", options: ["swiming", "swimming", "swimng", "swimm"], answer: 1 },
-            { unit: "Unit 8", q: "Complete: 'Listen! The baby ___ crying.'", options: ["is", "are", "am", "be"], answer: 0 },
-
-            // Unit 9: Present Simple
-            { unit: "Unit 9", q: "Choose the correct form: 'I ___ up early every morning.'", options: ["get", "gets", "getting", "got"], answer: 0 },
-            { unit: "Unit 9", q: "Complete: 'He ___ to school by bus.'", options: ["go", "goes", "going", "gone"], answer: 1 },
-            { unit: "Unit 9", q: "Choose the correct negative: 'She ___ like milk.'", options: ["don't", "doesn't", "isn't", "aren't"], answer: 1 },
-            { unit: "Unit 9", q: "Complete the question: '___ you speak English?'", options: ["Does", "Are", "Do", "Is"], answer: 2 },
-            { unit: "Unit 9", q: "Choose the correct form: 'They ___ football on Sundays.'", options: ["plays", "play", "playing", "played"], answer: 1 },
-
-            // Unit 10: Prepositions of Time (in / on / at)
-            { unit: "Unit 10", q: "Choose the correct preposition: 'My birthday is ___ July.'", options: ["in", "on", "at", "by"], answer: 0 },
-            { unit: "Unit 10", q: "Complete: 'The party is ___ Friday.'", options: ["in", "on", "at", "to"], answer: 1 },
-            { unit: "Unit 10", q: "Choose the correct preposition: 'I wake up ___ 7 o'clock.'", options: ["in", "on", "at", "under"], answer: 2 },
-            { unit: "Unit 10", q: "Complete: 'We sleep ___ night.'", options: ["in", "on", "at", "by"], answer: 2 },
-            { unit: "Unit 10", q: "Choose the correct option: 'It is cold ___ winter.'", options: ["in", "on", "at", "to"], answer: 0 },
-
-            // Unit 11: Prepositions of Place (in / on / at / under / behind...)
-            { unit: "Unit 11", q: "Choose the correct preposition: 'The cat is ___ the table (tag ostida).'", options: ["in", "on", "under", "at"], answer: 2 },
-            { unit: "Unit 11", q: "Complete: 'The books are ___ the bag (sumka ichida).'", options: ["in", "on", "at", "under"], answer: 0 },
-            { unit: "Unit 11", q: "Choose the correct option: 'The picture is ___ the wall (devorda).'", options: ["in", "on", "at", "under"], answer: 1 },
-            { unit: "Unit 11", q: "Complete: 'He is waiting ___ the bus stop.'", options: ["in", "on", "at", "under"], answer: 2 },
-            { unit: "Unit 11", q: "Choose the correct option: 'The dog is sitting ___ me and you (orasida).'", options: ["between", "in", "on", "at"], answer: 0 },
-
-            // Unit 12: Adjectives / Comparisons
-            { unit: "Unit 12", q: "Choose the comparative form: 'An elephant is ___ than a dog.'", options: ["big", "bigger", "biggest", "more big"], answer: 1 },
-            { unit: "Unit 12", q: "Complete: 'Mount Everest is the ___ mountain.'", options: ["high", "higher", "highest", "more high"], answer: 2 },
-            { unit: "Unit 12", q: "Choose the correct comparative: 'A car is ___ than a bicycle.'", options: ["fast", "faster", "fastest", "more fast"], answer: 1 },
-            { unit: "Unit 12", q: "What is the superlative form of 'good'?", options: ["gooder", "best", "goodest", "better"], answer: 1 },
-            { unit: "Unit 12", q: "Choose the correct form: 'This test is ___ than that one.'", options: ["easy", "easier", "easiest", "more easy"], answer: 1 },
-
-            // Unit 13: Past Simple (To Be: was / were)
-            { unit: "Unit 13", q: "Choose the correct past form: 'I ___ at home yesterday.'", options: ["was", "were", "is", "are"], answer: 0 },
-            { unit: "Unit 13", q: "Complete: 'They ___ happy with the results.'", options: ["was", "were", "is", "are"], answer: 1 },
-            { unit: "Unit 13", q: "Choose the negative past form: 'He ___ at school last Monday.'", options: ["wasn't", "weren't", "isn't", "don't"], answer: 0 },
-            { unit: "Unit 13", q: "Complete the question: '___ you tired last night?'", options: ["Was", "Were", "Did", "Are"], answer: 1 },
-            { unit: "Unit 13", q: "Choose the correct form: 'She ___ born in 2012.'", options: ["was", "were", "is", "did"], answer: 0 },
-
-            // Unit 14: Past Simple (Regular verbs)
-            { unit: "Unit 14", q: "Choose the past simple form of 'play':", options: ["playd", "played", "playing", "plays"], answer: 1 },
-            { unit: "Unit 14", q: "Complete: 'She ___ TV last night.'", options: ["watch", "watched", "watching", "watches"], answer: 1 },
-            { unit: "Unit 14", q: "Choose the correct negative: 'I ___ visit my grandma yesterday.'", options: ["didn't", "haven't", "wasn't", "don't"], answer: 0 },
-            { unit: "Unit 14", q: "Complete the question: '___ you clean your room yesterday?'", options: ["Do", "Did", "Were", "Have"], answer: 1 },
-            { unit: "Unit 14", q: "What is the past form of 'listen'?", options: ["listend", "listened", "listening", "listen"], answer: 1 },
-
-            // Unit 15: Past Simple (Irregular verbs)
-            { unit: "Unit 15", q: "What is the past simple form of 'go'?", options: ["goed", "went", "gone", "going"], answer: 1 },
-            { unit: "Unit 15", q: "Choose the past form of 'see':", options: ["seed", "saw", "seen", "seeing"], answer: 1 },
-            { unit: "Unit 15", q: "Complete: 'He ___ an apple for lunch yesterday.'", options: ["eat", "ate", "eaten", "eating"], answer: 1 },
-            { unit: "Unit 15", q: "What is the past form of 'have'?", options: ["haived", "had", "has", "haven"], answer: 1 },
-            { unit: "Unit 15", q: "Choose the past form of 'buy':", options: ["buyed", "bought", "brought", "buying"], answer: 1 },
-
-            // Unit 16: Future Simple (Will / Be going to)
-            { unit: "Unit 16", q: "Choose the correct future form: 'I think it ___ rain tomorrow.'", options: ["will", "is", "going to", "was"], answer: 0 },
-            { unit: "Unit 16", q: "Complete with 'be going to': 'She ___ visit her aunt next week.'", options: ["is going to", "will", "goes", "went"], answer: 0 },
-            { unit: "Unit 16", q: "Choose the correct negative: 'We ___ not go to the party tomorrow.'", options: ["will", "are", "do", "did"], answer: 0 },
-            { unit: "Unit 16", q: "Complete the question: '___ you help me with my homework?'", options: ["Are", "Will", "Do", "Did"], answer: 1 },
-            { unit: "Unit 16", q: "Choose the correct option: 'Look at those clouds! It ___ rain.'", options: ["will", "is going to", "is", "rains"], answer: 1 },
-
-            // Unit 17: Countable & Uncountable Nouns / Some / Any
-            { unit: "Unit 17", q: "Choose the correct option: 'I have ___ apples in the basket.'", options: ["some", "any", "a", "an"], answer: 0 },
-            { unit: "Unit 17", q: "Complete the negative sentence: 'We don't have ___ milk left.'", options: ["some", "any", "a", "an"], answer: 1 },
-            { unit: "Unit 17", q: "Choose the correct word for uncountable nouns: 'Can I have ___ water?'", options: ["some", "any", "a", "many"], answer: 0 },
-            { unit: "Unit 17", q: "Complete the question: 'Are there ___ students in the room?'", options: ["some", "any", "a", "much"], answer: 1 },
-            { unit: "Unit 17", q: "Which of these is uncountable?", options: ["apple", "water", "chair", "book"], answer: 1 },
-
-            // Unit 18: Must / Mustn't / Have to
-            { unit: "Unit 18", q: "Choose the correct obligation: 'You ___ obey the school rules.'", options: ["must", "mustn't", "can", "don't"], answer: 0 },
-            { unit: "Unit 18", q: "Complete the prohibition: 'You ___ park here. It is forbidden.'", options: ["must", "mustn't", "can", "have to"], answer: 1 },
-            { unit: "Unit 18", q: "Choose the correct option: 'It's raining. I ___ take an umbrella.'", options: ["must", "mustn't", "can't", "aren't"], answer: 0 },
-            { unit: "Unit 18", q: "Complete: 'You ___ talk during the exam.'", options: ["must", "mustn't", "can", "will"], answer: 1 },
-            { unit: "Unit 18", q: "Choose the correct form: 'Students ___ wear uniform at our school.'", options: ["must", "mustn't", "can't", "no"], answer: 0 },
-
-            // Unit 19: Conjunctions (And / But / Because / So)
-            { unit: "Unit 19", q: "Choose the correct conjunction: 'I like apples ___ bananas.'", options: ["and", "but", "because", "so"], answer: 0 },
-            { unit: "Unit 19", q: "Complete: 'I wanted to go out, ___ it was raining.'", options: ["and", "but", "because", "so"], answer: 1 },
-            { unit: "Unit 19", q: "Choose the correct option: 'She was tired, ___ she went to bed early.'", options: ["because", "so", "but", "and"], answer: 1 },
-            { unit: "Unit 19", q: "Complete: 'He stayed at home ___ he was sick.'", options: ["because", "so", "but", "and"], answer: 0 },
-            { unit: "Unit 19", q: "Choose the correct conjunction: 'I can speak English ___ I can't speak French.'", options: ["and", "but", "because", "so"], answer: 1 }
-        ];
-
+        let currentQuestions = [];
         let currentQuestion = 0;
         let score = 0;
         let answered = false;
 
+        const levelScreen = document.getElementById("level-screen");
+        const quizScreen = document.getElementById("quiz-screen");
+        const resultScreen = document.getElementById("result-screen");
+        
         const questionCountEl = document.getElementById("question-count");
         const unitTitleEl = document.getElementById("unit-title");
         const questionTextEl = document.getElementById("question-text");
         const optionsListEl = document.getElementById("options-list");
         const nextBtnEl = document.getElementById("next-btn");
-        const quizScreenEl = document.getElementById("quiz-screen");
-        const resultScreenEl = document.getElementById("result-screen");
         const scoreTextEl = document.getElementById("score-text");
         const resultMessageEl = document.getElementById("result-message");
+
+        function shuffleArray(array) {
+            let arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        function startQuiz(level) {
+            currentQuestions = shuffleArray(quizData[level]);
+            currentQuestion = 0;
+            score = 0;
+            
+            levelScreen.style.display = "none";
+            resultScreen.style.display = "none";
+            quizScreen.style.display = "block";
+            
+            loadQuestion();
+        }
 
         function loadQuestion() {
             answered = false;
             nextBtnEl.style.display = "none";
             
-            const q = questions[currentQuestion];
-            questionCountEl.innerText = `Savol: ${currentQuestion + 1} / ${questions.length}`;
+            const q = currentQuestions[currentQuestion];
+            questionCountEl.innerText = `Savol: ${currentQuestion + 1} / ${currentQuestions.length}`;
             unitTitleEl.innerText = q.unit;
             questionTextEl.innerText = q.q;
             
@@ -359,7 +647,7 @@
             if (answered) return;
             answered = true;
 
-            const q = questions[currentQuestion];
+            const q = currentQuestions[currentQuestion];
             const buttons = optionsListEl.getElementsByClassName("option-btn");
 
             if (selectedIndex === q.answer) {
@@ -376,7 +664,7 @@
 
         function nextQuestion() {
             currentQuestion++;
-            if (currentQuestion < questions.length) {
+            if (currentQuestion < currentQuestions.length) {
                 loadQuestion();
             } else {
                 showResult();
@@ -384,32 +672,29 @@
         }
 
         function showResult() {
-            quizScreenEl.style.display = "none";
-            resultScreenEl.style.display = "block";
-            scoreTextEl.innerText = `${score} / ${questions.length}`;
+            quizScreen.style.display = "none";
+            resultScreen.style.display = "block";
+            scoreTextEl.innerText = `${score} / ${currentQuestions.length}`;
 
             let message = "";
-            if (score >= 90) {
-                message = "Ajoyib natija! Siz kitobni mukammal o'zlashtirgansiz! 🏆";
-            } else if (score >= 70) {
+            let percentage = (score / currentQuestions.length) * 100;
+            if (percentage >= 90) {
+                message = "Ajoyib natija! Siz bu darajani mukammal o'zlashtirgansiz! 🏆";
+            } else if (percentage >= 70) {
                 message = "Juda yaxshi! Bilimingiz ancha puxta. 👍";
-            } else if (score >= 50) {
-                message = "Yomon emas, lekin ba'zi mavzularni takrorlab chiqish kerak. 📚";
+            } else if (percentage >= 50) {
+                message = "Yaxshi, lekin ba'zi mavzularni takrorlab chiqish kerak. 📚";
             } else {
                 message = "Hali ko'proq shug'ullanish kerak ekan. Taslim bo'lmang! 💪";
             }
             resultMessageEl.innerText = message;
         }
 
-        function restartQuiz() {
-            currentQuestion = 0;
-            score = 0;
-            quizScreenEl.style.display = "block";
-            resultScreenEl.style.display = "none";
-            loadQuestion();
+        function goToHome() {
+            quizScreen.style.display = "none";
+            resultScreen.style.display = "none";
+            levelScreen.style.display = "block";
         }
-
-        loadQuestion();
     </script>
 </body>
 </html>
