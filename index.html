@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Round-Up 1 - 100 Ta Unikal Savolli Test</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --success: #10b981;
+            --error: #ef4444;
+            --bg: #f3f4f6;
+            --card-bg: #ffffff;
+            --text: #1f2937;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 700px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-size: 24px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #6b7280;
+            margin-bottom: 24px;
+            font-size: 14px;
+        }
+
+        .difficulty-screen {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn-diff {
+            padding: 18px;
+            font-size: 18px;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+            color: white;
+            text-align: center;
+        }
+
+        .btn-diff:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-easy { background-color: #10b981; }
+        .btn-medium { background-color: #f59e0b; }
+        .btn-hard { background-color: #ef4444; }
+
+        .quiz-screen {
+            display: none;
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #6b7280;
+            font-weight: 600;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            background-color: #e5e7eb;
+            height: 8px;
+            border-radius: 4px;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--primary);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .question-box {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #111827;
+            line-height: 1.5;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .option-btn {
+            background-color: #f9fafb;
+            border: 2px solid #e5e7eb;
+            padding: 14px 18px;
+            border-radius: 10px;
+            font-size: 16px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #374151;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            background-color: #f3f4f6;
+            border-color: var(--primary);
+        }
+
+        .option-btn.correct {
+            background-color: #d1fae5 !important;
+            border-color: var(--success) !important;
+            color: #065f46 !important;
+        }
+
+        .option-btn.incorrect {
+            background-color: #fee2e2 !important;
+            border-color: var(--error) !important;
+            color: #991b1b !important;
+        }
+
+        .explanation {
+            background-color: #eff6ff;
+            border-left: 4px solid var(--primary);
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #1e40af;
+            display: none;
+        }
+
+        .next-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: none;
+        }
+
+        .next-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .result-screen {
+            display: none;
+            text-align: center;
+        }
+
+        .result-screen h2 {
+            font-size: 28px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: #e0e7ff;
+            color: var(--primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 28px;
+            font-weight: bold;
+            margin: 0 auto 20px auto;
+        }
+
+        .result-message {
+            font-size: 16px;
+            color: #4b5563;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .restart-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .restart-btn:hover {
+            background-color: var(--primary-dark);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Bosh sahifa -->
+        <div id="homeScreen">
+            <h1>New Round-Up 1</h1>
+            <p class="subtitle">100 ta mutlaqo har xil va unikal savollar bazasi</p>
+            <div class="difficulty-screen">
+                <button class="btn-diff btn-easy" onclick="startQuiz('easy')">🟢 Oson daraja (100 ta unikal savol)</button>
+                <button class="btn-diff btn-medium" onclick="startQuiz('medium')">🟡 O'rtacha daraja (100 ta unikal savol)</button>
+                <button class="btn-diff btn-hard" onclick="startQuiz('hard')">🔴 Qiyin daraja (100 ta unikal savol)</button>
+            </div>
+        </div>
+
+        <!-- Savol sahifasi -->
+        <div id="quizScreen" class="quiz-screen">
+            <div class="quiz-header">
+                <span id="questionCount">Savol: 1 / 100</span>
+                <span id="unitBadge">Unit 1</span>
+            </div>
+            <div class="progress-bar-container">
+                <div id="progressBar" class="progress-bar"></div>
+            </div>
+            
+            <div id="questionBox" class="question-box">Savol matni shu yerda chiqadi...</div>
+            
+            <div id="optionsList" class="options-list"></div>
+
+            <div id="explanationBox" class="explanation"></div>
+
+            <button id="nextBtn" class="next-btn" onclick="nextQuestion()">Keyingi savol ➔</button>
+        </div>
+
+        <!-- Natija sahifasi -->
+        <div id="resultScreen" class="result-screen">
+            <h2>Test yakunlandi! 🎉</h2>
+            <div id="scoreCircle" class="score-circle">0/100</div>
+            <p id="resultMessage" class="result-message">Natijangiz hisoblandi.</p>
+            <button class="restart-btn" onclick="resetToHome()">Bosh sahifaga qaytish</button>
+        </div>
+    </div>
+
+    <script>
+        // 100 ta mutlaqo har xil va bir-birini takrorlamaydigan savollar bazasi
+        const masterQuestions = [
+            // Unit 1: A / An - Plurals (1-6)
+            { unit: "Unit 1: A/An - Plurals", q: "Choose the correct plural form of 'child':", opts: ["childs", "children", "childes", "childrens"], ans: "children", exp: "'Child' so'zi noto'g'ri ot bo'lib, ko'plikda 'children' bo'ladi." },
+            { unit: "Unit 1: A/An - Plurals", q: "Choose the correct article: 'He is ... honest boy.'", opts: ["a", "an", "the", "some"], ans: "an", exp: "'Honest' so'zi unli tovush bilan boshlangani uchun 'an' ishlatiladi." },
+            { unit: "Unit 1: A/An - Plurals", q: "What is the plural of 'box'?", opts: ["boxs", "boxes", "boxies", "boxen"], ans: "boxes", exp: "-x, -sh, -ch, -ss bilan tugagan otlarga '-es' qo'shiladi." },
+            { unit: "Unit 1: A/An - Plurals", q: "Choose the correct plural form of 'fish':", opts: ["fishes", "fish", "fishs", "fishies"], ans: "fish", exp: "'Fish' so'zining birlik va ko'plik shakli bir xil." },
+            { unit: "Unit 1: A/An - Plurals", q: "Choose the correct article: 'I saw ... elephant at the zoo.'", opts: ["a", "an", "the", "an'i"], ans: "an", exp: "'Elephant' so'zi unli harf bilan boshlanadi." },
+            { unit: "Unit 1: A/An - Plurals", q: "What is the plural of 'baby'?", opts: ["babys", "babies", "babe", "babyes"], ans: "babies", exp: "Undosh + y bilan tugagan otlarda 'y' tushib, '-ies' qo'shiladi." },
+
+            // Unit 2: Personal Pronouns (7-12)
+            { unit: "Unit 2: Personal Pronouns", q: "Mary is a girl. ... likes reading books.", opts: ["He", "She", "It", "They"], ans: "She", exp: "Ayol jinsidagi shaxs uchun 'She' kishilik olmoshi ishlatiladi." },
+            { unit: "Unit 2: Personal Pronouns", q: "Tom and Bob are friends. ... play football together.", opts: ["He", "She", "They", "We"], ans: "They", exp: "Ko'plikdagi shaxslar uchun 'They' olmoshi qo'shiladi." },
+            { unit: "Unit 2: Personal Pronouns", q: "Look at the cat! ... is sleeping on the sofa.", opts: ["He", "She", "It", "They"], ans: "It", exp: "Jonivorlar va jonsiz narsalar uchun 'It' olmoshi ishlatiladi." },
+            { unit: "Unit 2: Personal Pronouns", q: "John and I are students. ... study at school.", opts: ["They", "You", "We", "He"], ans: "We", exp: "O'zimizni qo'shib gapirganda 'We' (biz) olmoshi ishlatiladi." },
+            { unit: "Unit 2: Personal Pronouns", q: "Are ... a new student here?", opts: ["he", "she", "you", "it"], ans: "you", exp: "Siz so'ziga nisbatan 'you' ishlatiladi." },
+            { unit: "Unit 2: Personal Pronouns", q: "My father is a doctor. ... works in a hospital.", opts: ["She", "He", "It", "They"], ans: "He", exp: "Erkak kishi uchun 'He' olmoshi ishlatiladi." },
+
+            // Unit 3: Verb 'To Be' (13-18)
+            { unit: "Unit 3: Verb 'To Be'", q: "Fill in the blank: 'I ... a good student.'", opts: ["is", "are", "am", "be"], ans: "am", exp: "'I' olmoshi doimo 'am' fe'li bilan keladi." },
+            { unit: "Unit 3: Verb 'To Be'", q: "Fill in the blank: 'They ... in the park now.'", opts: ["am", "is", "are", "be"], ans: "are", exp: "'They' olmoshi bilan 'are' fe'li ishlatiladi." },
+            { unit: "Unit 3: Verb 'To Be'", q: "Choose the correct form: 'My mother ... at home.'", opts: ["am", "is", "are", "be"], ans: "is", exp: "Mother (she) uchinchi shaxs birlik bo'lgani uchun 'is' oladi." },
+            { unit: "Unit 3: Verb 'To Be'", q: "Negative form: 'We ... not late.'", opts: ["am", "is", "are", "be"], ans: "are", exp: "Biz (we) olmoshi uchun o'tishda 'are' ishlatiladi." },
+            { unit: "Unit 3: Verb 'To Be'", q: "Question form: '... you ready for the test?'", opts: ["Am", "Is", "Are", "Do"], ans: "Are", exp: "So'roq gapda 'You' oldidan 'Are' chiqadi." },
+            { unit: "Unit 3: Verb 'To Be'", q: "Fill in: 'The dog ... brown and white.'", opts: ["am", "is", "are", "be"], ans: "is", exp: "It (the dog) birlikda bo'lgani uchun 'is' ishlatiladi." },
+
+            // Unit 4: Possessives (19-24)
+            { unit: "Unit 4: Possessives", q: "This is the book of Tom. -> 'This is ... book.'", opts: ["Toms", "Tom's", "Toms'", "Tom book's"], ans: "Tom's", exp: "Egalikni bildirish uchun otga apostrof va s ('s) qo'shiladi." },
+            { unit: "Unit 4: Possessives", q: "Whose bag is this? It is ... bag.", opts: ["Helen", "Helens", "Helen's", "Helen of"], ans: "Helen's", exp: "Helenning sumkasi ma'nosida 'Helen's' ishlatiladi." },
+            { unit: "Unit 4: Possessives", q: "This is a room for boys. -> 'This is the ... room.'", opts: ["boy's", "boys'", "boys", "boyes"], ans: "boys'", oxirida: "boys'", exp: "Ko'plikdagi otlarga egalik uchun faqat apostrof (') qo'yiladi." },
+            { unit: "Unit 4: Possessives", q: "The car of my father -> 'My ... car'", opts: ["father", "fathers", "father's", "fathers'"], ans: "father's", exp: "Otamning mashinasi uchun 'father's' ishlatiladi." },
+            { unit: "Unit 4: Possessives", q: "The toys of the children -> 'The ... toys'", opts: ["childrens", "children's", "childrens'", "child's"], ans: "children's", exp: "Notog'ri ko'plik otlariga ham apostrof-s ('s) qo'shiladi." },
+            { unit: "Unit 4: Possessives", q: "That is ... pen. Give it to him.", opts: ["Peter", "Peter's", "Peters", "Peters'"], ans: "Peter's", exp: " Pyotrning ruchkasi ma'nosida 'Peter's' ishlatiladi." },
+
+            // Unit 5: This/That - These/Those (25-30)
+            { unit: "Unit 5: Demonstratives", q: "... is an apple in my hand (near, singular).", opts: ["This", "That", "These", "Those"], ans: "This", exp: "Yaqindagi birlikdagi narsalar uchun 'This' ishlatiladi." },
+            { unit: "Unit 5: Demonstratives", q: "... are stars in the sky (far, plural).", opts: ["This", "That", "These", "Those"], ans: "Those", exp: "Uzoqdagi ko'plikdagi narsalar uchun 'Those' ishlatiladi." },
+            { unit: "Unit 5: Demonstratives", q: "Look at ... bird over there on that tree.", opts: ["this", "that", "these", "those"], ans: "that", exp: "Uzoqdagi birlikdagi narsalar uchun 'That' ishlatiladi." },
+            { unit: "Unit 5: Demonstratives", q: "... are my pencils here on this desk.", opts: ["This", "That", "These", "Those"], ans: "These", exp: "Yaqindagi ko'plikdagi narsalar uchun 'These' ishlatiladi." },
+            { unit: "Unit 5: Demonstratives", q: "Is ... your umbrella over there?", opts: ["this", "that", "these", "those"], ans: "that", exp: "Uzoqdagi narsani ko'rsatishda 'that' ishlatiladi." },
+            { unit: "Unit 5: Demonstratives", q: "Who are ... people standing by the door?", opts: ["this", "that", "these", "it"], ans: "these", exp: "Yaqinda turgan ko'plikdagi odamlar uchun 'these' ishlatiladi." },
+
+            // Unit 6: There is / There are (31-36)
+            { unit: "Unit 6: There is/are", q: "Fill in the blank: '... a book on the desk.'", opts: ["There is", "There are", "There am", "Is there"], ans: "There is", exp: "'A book' birlikda bo'lgani uchun 'There is' ishlatiladi." },
+            { unit: "Unit 6: There is/are", q: "Fill in the blank: '... three cats in the room.'", opts: ["There is", "There are", "There am", "Are there"], ans: "There are", exp: "'Three cats' ko'plikda bo'lgani uchun 'There are' ishlatiladi." },
+            { unit: "Unit 6: There is/are", q: "Question form: '... an apple in the basket?'", opts: ["Is there", "Are there", "There is", "There are"], ans: "Is there", exp: "Birlikdagi so'roq gap uchun 'Is there' ishlatiladi." },
+            { unit: "Unit 6: There is/are", q: "Negative form: '... not any milk in the glass.'", opts: ["There is", "There are", "There am", "Are there"], ans: "There is", exp: "Sanalmaydigan otlar birlikda qaraladi ('There is')." },
+            { unit: "Unit 6: There is/are", q: "Fill in: '... a lot of flowers in the garden.'", opts: ["There is", "There are", "There be", "Is there"], ans: "There are", exp: "'Flowers' so'zi ko'plikda." },
+            { unit: "Unit 6: There is/are", q: "Question form: '... many students in the class?'", opts: ["Is there", "Are there", "There are", "Have there"], ans: "Are there", exp: "Ko'plikdagi otlar bilan savol berganda 'Are there' ishlatiladi." },
+
+            // Unit 7: Can (37-42)
+            { unit: "Unit 7: Can", q: "Birds can ..., but they cannot swim.", opts: ["fly", "run", "walk", "crawl"], ans: "fly", exp: "Qushlar ucha oladi ('fly')." },
+            { unit: "Unit 7: Can", q: "Fish can swim, but they ... fly.", opts: ["can", "cannot", "are", "do"], ans: "cannot", exp: "Baliqlar ucha olmaydi ('cannot')." },
+            { unit: "Unit 7: Can", q: "Question: '... you speak English?' - 'Yes, I can.'", opts: ["Do", "Are", "Can", "Is"], ans: "Can", exp: "Qobiliyat so'raganda 'Can' ishlatiladi." },
+            { unit: "Unit 7: Can", q: "A car can run very fast, but it ... climb trees.", opts: ["can", "cannot", "does", "is"], ans: "cannot", exp: "Mashina daraxtga chiqolmaydi." },
+            { unit: "Unit 7: Can", q: "Monkeys can jump and they ... climb trees easily.", opts: ["can", "cannot", "cant", "is"], ans: "can", exp: "Maymunlar daraxtga chiqish qobiliyatiga ega." },
+            { unit: "Unit 7: Can", q: "Baby cannot walk yet, because he ... very small.", opts: ["can", "is", "can't", "does"], ans: "is", exp: "Bu yerda to be fe'li talab etiladi ('is')." },
+
+            // Unit 8: Imperatives (43-48)
+            { unit: "Unit 8: Imperatives", q: "Choose the correct imperative: '... the door, please.'", opts: ["Open", "Opens", "Opening", "To open"], ans: "Open", exp: "Buyruq gaplar fe'lning 1-shakli bilan boshlanadi." },
+            { unit: "Unit 8: Imperatives", q: "Negative imperative: '... touch the hot iron!'", opts: ["Do not", "Not", "No", "Does not"], ans: "Do not", exp: "Taqiqlash uchun 'Do not' (Don't) ishlatiladi." },
+            { unit: "Unit 8: Imperatives", q: "Complete: '... quiet in the library.'", opts: ["Be", "Is", "Are", "Being"], ans: "Be", exp: "Buyruq shaklida 'Be quiet!' deyiladi." },
+            { unit: "Unit 8: Imperatives", q: "Complete: '... write on the wall! It is bad.'", opts: ["Don't", "Do", "Be", "Please"], ans: "Don't", exp: "Devorga yozma ma'nosida taqiqlovchi buyruq." },
+            { unit: "Unit 8: Imperatives", q: "Choose correct form: '... up early in the morning.'", opts: ["Get", "Gets", "Getting", "To get"], ans: "Get", exp: "Buyruq fe'li boshlang'ich shaklda keladi." },
+            { unit: "Unit 8: Imperatives", q: "Complete: '... listen to the teacher carefully.'", opts: ["Please", "Don't", "Are", "Is"], ans: "Please", exp: "Iltimos ma'nosida 'Please listen' ishlatiladi." },
+
+            // Unit 9: Possessive Pronouns (49-54)
+            { unit: "Unit 9: Possessive Pronouns", q: "This pen is not mine. It is ...", opts: ["your", "yours", "you", "my"], ans: "yours", exp: "Gap oxirida otni takrorlamasdan egalik olmoshining mustaqil shakli ('yours') ishlatiladi." },
+            { unit: "Unit 9: Possessive Pronouns", q: "Is this car ...? Yes, it is my car.", opts: ["my", "mine", "me", "I"], ans: "mine", exp: "Sizniki / menikimi ma'nosida mustaqil egalik olmoshi 'mine' ishlatiladi." },
+            { unit: "Unit 9: Possessive Pronouns", q: "That house is ... . They bought it last year.", opts: ["their", "theirs", "them", "they"], ans: "theirs", exp: "Ularniki ma'nosida 'theirs' ishlatiladi." },
+            { unit: "Unit 9: Possessive Pronouns", q: "This jacket is ... . He wears it every day.", opts: ["his", "him", "he", "hes"], ans: "his", exp: "Uningki (erkak kishiga) 'his' bo'ladi." },
+            { unit: "Unit 9: Possessive Pronouns", q: "We live here. This big garden is ...", opts: ["our", "ours", "us", "we"], ans: "ours", exp: "Bizniki ma'nosida 'ours' ishlatiladi." },
+            { unit: "Unit 9: Possessive Pronouns", q: "Cat has got a toy. That ball is ...", opts: ["its", "it's", "its'", "it"], ans: "its", exp: "Jonivorga tegishli egalik 'its' orqali bildiriladi." },
+
+            // Unit 10: Have / Have got (55-60)
+            { unit: "Unit 10: Have / Has got", q: "Fill in: 'She ... got a blue car.'", opts: ["have", "has", "is", "does"], ans: "has", exp: "Uchinchi shaxs birlik ('She') uchun 'has got' ishlatiladi." },
+            { unit: "Unit 10: Have / Has got", q: "Fill in: 'I ... got two brothers.'", opts: ["have", "has", "am", "do"], ans: "have", exp: "'I' olmoshi bilan 'have got' ishlatiladi." },
+            { unit: "Unit 10: Have / Has got", q: "Question: '... they got a computer?'", opts: ["Have", "Has", "Do", "Are"], ans: "Have", exp: "Ko'plik shakldagi savol 'Have ... got' bilan boshlanadi." },
+            { unit: "Unit 10: Have / Has got", q: "Negative: 'He ... got any pets.'", opts: ["hasn't", "haven't", "is not", "doesn't"], ans: "hasn't", exp: "He uchun bo'lishsiz shakl 'hasn't got' bo'ladi." },
+            { unit: "Unit 10: Have / Has got", q: "Fill in: 'My friends ... got cool bicycles.'", opts: ["has", "have", "are", "do"], ans: "have", exp: "Friends ko'plikda bo'lgani uchun 'have got' ishlatiladi." },
+            { unit: "Unit 10: Have / Has got", q: "Question: '... your sister got a phone?'", opts: ["Have", "Has", "Is", "Does"], ans: "Has", exp: "Sister (she) uchun 'Has ... got' ishlatiladi." },
+
+            // Unit 11: Present Simple (61-66)
+            { unit: "Unit 11: Present Simple", q: "He usually ... to school by bus.", opts: ["go", "goes", "going", "gone"], ans: "goes", exp: "Present Simple zamonida uchinchi shaxs birlik ('He') fe'lga '-es' qo'shadi." },
+            { unit: "Unit 11: Present Simple", q: "I ... English every day.", opts: ["study", "studies", "studying", "studied"], ans: "study", exp: "Birinchi shaxs birlik ('I') fe'lni o'zgarishsiz oladi." },
+            { unit: "Unit 11: Present Simple", q: "Negative: 'They ... like eating fish.'", opts: ["don't", "doesn't", "aren't", "isn't"], ans: "don't", exp: "They uchun Present Simple bo'lishsiz shakli 'don't'." },
+            { unit: "Unit 11: Present Simple", q: "Question: '... you play football on Sundays?'", opts: ["Are", "Do", "Does", "Have"], ans: "Do", exp: "You olmoshi bilan so'roq gap 'Do' orqali yasaladi." },
+            { unit: "Unit 11: Present Simple", q: "My cat ... sleeping all day, it catches mice.", opts: ["like", "likes", "is liking", "liked"], ans: "likes", exp: "Cat uchun 'likes' ishlatiladi." },
+            { unit: "Unit 11: Present Simple", q: "We ... in a nice house near the river.", opts: ["lives", "live", "living", "lived"], ans: "live", exp: "We uchun fe'l o'zgarmaydi ('live')." },
+
+            // Unit 12: Present Continuous (67-72)
+            { unit: "Unit 12: Present Continuous", q: "Listen! The baby ... right now.", opts: ["cry", "cries", "is crying", "cried"], ans: "is crying", exp: "'Listen!' so'zi hozir sodir bo'layotgan ish-harakatni bildiradi." },
+            { unit: "Unit 12: Present Continuous", q: "Look! They ... football in the yard.", opts: ["play", "plays", "are playing", "played"], ans: "are playing", exp: "Hozirgi davomiy zamon (are playing)." },
+            { unit: "Unit 12: Present Continuous", q: "I ... reading an interesting book at the moment.", opts: ["am", "is", "are", "do"], ans: "am", exp: "I bilan 'am' va fe'lga '-ing' qo'shiladi." },
+            { unit: "Unit 12: Present Continuous", q: "What ... you doing right now?", opts: ["is", "are", "do", "does"], ans: "are", exp: "You bilan 'are' ishlatiladi." },
+            { unit: "Unit 12: Present Continuous", q: "She ... wearing a red dress today.", opts: ["am", "is", "are", "be"], ans: "is", exp: "She uchun 'is' ishlatiladi." },
+            { unit: "Unit 12: Present Continuous", q: "Be quiet! The teacher ... explaining the rule.", opts: ["are", "is", "am", "be"], ans: "is", exp: "Teacher birlikda bo'lgani uchun 'is' oladi." },
+
+            // Unit 13: Present Simple vs Continuous (73-78)
+            { unit: "Unit 13: Present Simple vs Cont.", q: "Water ... at 100 degrees Celsius (fact).", opts: ["boil", "boils", "is boiling", "boiled"], ans: "boils", exp: "Tabiat qonunlari Present Simple zamonida ifodalanadi." },
+            { unit: "Unit 13: Present Simple vs Cont.", q: "Look! The sun ... brightly today.", opts: ["shine", "shines", "is shining", "shined"], ans: "is shining", exp: "'Look!' so'zi hozirgi davomiy zamonni talab qiladi." },
+            { unit: "Unit 13: Present Simple vs Cont.", q: "He usually wears jeans, but today he ... a suit.", opts: ["wear", "wears", "is wearing", "wore"], ans: "is wearing", exp: "Hozirgi vaqtda vaqtinchalik bajarilayotgan ish-harakat." },
+            { unit: "Unit 13: Present Simple vs Cont.", q: "My father ... work at 8 AM every morning.", opts: ["start", "starts", "is starting", "started"], ans: "starts", exp: "Har kuni takrorlanadigan odat (Present Simple)." },
+            { unit: "Unit 13: Present Simple vs Cont.", q: "Listen! Somebody ... at the door.", opts: ["knock", "knocks", "is knocking", "knocked"], ans: "is knocking", exp: "'Listen!' so'zi orqali aniqlanadi." },
+            { unit: "Unit 13: Present Simple vs Cont.", q: "Cats ... mice. It is their nature.", opts: ["catch", "catches", "are catching", "caught"], ans: "catch", exp: "O'zgarmas tabiat va odat." },
+
+            // Unit 14: Prepositions of Place (79-84)
+            { unit: "Unit 14: Prepositions", q: "The cat is hiding ... the table (stul tagida).", opts: ["in", "on", "under", "at"], ans: "under", exp: "Ostida ma'nosi uchun 'under' ishlatiladi." },
+            { unit: "Unit 14: Prepositions", q: "The books are ... the shelf (javon ustida).", opts: ["in", "on", "under", "behind"], ans: "on", exp: "Ustida ma'nosi uchun 'on' ishlatiladi." },
+            { unit: "Unit 14: Prepositions", q: "The pencils are ... the pencil case (qalamdon ichida).", opts: ["on", "in", "under", "next to"], ans: "in", exp: "Ichida ma'nosi uchun 'in' ishlatiladi." },
+            { unit: "Unit 14: Prepositions", q: "The ball is ... the box and the wall.", opts: ["between", "in", "on", "at"], ans: "between", exp: "O'rtasida ma'nosi uchun 'between' ishlatiladi." },
+            { unit: "Unit 14: Prepositions", q: "The school is ... the park (yonida).", opts: ["next to", "in", "on", "under"], ans: "next to", exp: "Yonida ma'nosida 'next to' ishlatiladi." },
+            { unit: "Unit 14: Prepositions", q: "He is sitting ... me in the classroom.", opts: ["behind", "on", "in", "at"], ans: "behind", exp: "Orqasida ma'nosida 'behind' ishlatiladi." },
+
+            // Unit 15: Past Simple - To Be (85-88)
+            { unit: "Unit 15: Past Simple (To Be)", q: "They ... happy at the party yesterday.", opts: ["was", "were", "are", "is"], ans: "were", exp: "O'tgan zamonda 'They' uchun 'were' ishlatiladi." },
+            { unit: "Unit 15: Past Simple (To Be)", q: "I ... at home last night.", opts: ["was", "were", "am", "is"], ans: "was", exp: "O'tgan zamonda 'I' uchun 'was' ishlatiladi." },
+            { unit: "Unit 15: Past Simple (To Be)", q: "Where ... you born?", opts: ["was", "were", "are", "did"], ans: "were", exp: "You olmoshi bilan 'were' ishlatiladi." },
+            { unit: "Unit 15: Past Simple (To Be)", q: "It ... cold and rainy yesterday.", opts: ["was", "were", "is", "did"], ans: "was", exp: "It uchun o'tgan zamonda 'was' ishlatiladi." },
+
+            // Unit 16: Past Simple - Regular/Irregular Verbs (89-92)
+            { unit: "Unit 16: Past Simple (Verbs)", q: "She ... a letter to her friend yesterday.", opts: ["write", "wrote", "writed", "writing"], ans: "wrote", exp: "'Write' fe'li noto'g'ri fe'l bo'lib, o'tgan zamonda 'wrote' bo'ladi." },
+            { unit: "Unit 16: Past Simple (Verbs)", q: "We ... football match last Sunday.", opts: ["watch", "watched", "watching", "watches"], ans: "watched", exp: "'Watch' to'g'ri fe'l bo'lib, '-ed' qo'shimchasini oladi." },
+            { unit: "Unit 16: Past Simple (Verbs)", q: "Negative: 'I ... go to school yesterday because I was sick.'", opts: ["didn't", "don't", "wasn't", "haven't"], ans: "didn't", exp: "O'tgan zamon bo'lishsiz shakli 'didn't' orqali yasaladi." },
+            { unit: "Unit 16: Past Simple (Verbs)", q: "Question: '... you see him yesterday?'", opts: ["Do", "Did", "Are", "Were"], ans: "Did", exp: "O'tgan zamon so'roq gaplari 'Did' yordamida tuziladi." },
+
+            // Unit 17: How much/many - Some/Any (93-96)
+            { unit: "Unit 17: Much/Many/Some/Any", q: "I have got ... water in the bottle (tasdiq, sanalmaydi).", opts: ["some", "any", "a", "many"], ans: "some", exp: "Tasdiq gapdagi sanalmaydigan otlar bilan 'some' ishlatiladi." },
+            { unit: "Unit 17: Much/Many/Some/Any", q: "Are there ... apples in the fridge? (so'roq)", opts: ["some", "any", "much", "a"], ans: "any", exp: "So'roq gaplarda 'any' ishlatiladi." },
+            { unit: "Unit 17: Much/Many/Some/Any", q: "How ... apples do you have? (sanoqli)", opts: ["much", "many", "some", "any"], ans: "many", exp: "Sanoqli otlar bilan 'How many' ishlatiladi." },
+            { unit: "Unit 17: Much/Many/Some/Any", q: "How ... milk is left in the carton? (sanalmaydi)", opts: ["many", "much", "some", "any"], ans: "much", exp: "Sanalmaydigan otlar bilan 'How much' ishlatiladi." },
+
+            // Unit 18: Future Simple (97-98)
+            { unit: "Unit 18: Future Simple", q: "I think it ... rain tomorrow.", opts: ["will", "is", "goes", "does"], ans: "will", exp: "Kelajakdagi taxminlar uchun 'will' yordamchi fe'li ishlatiladi." },
+            { unit: "Unit 18: Future Simple", q: "We ... visit our grandparents next week.", opts: ["will", "are", "do", "have"], ans: "will", exp: "Kelasi zamonni bildirish uchun 'will' ishlatiladi." },
+
+            // Unit 19: Conjunctions (99-100)
+            { unit: "Unit 19: Conjunctions", q: "I was tired, ... I went to bed early (shuning uchun).", opts: ["because", "so", "but", "or"], ans: "so", exp: "Natijani bildirish uchun 'so' bog'lovchisi ishlatiladi." },
+            { unit: "Unit 19: Conjunctions", q: "I wanted to go to the park, ... it started to rain (lekin).", opts: ["and", "so", "but", "because"], ans: "but", exp: "Zidniatni bildirish uchun 'but' (lekin) ishlatiladi." }
+        ];
+
+        let currentQuestions = [];
+        let currentIndex = 0;
+        let score = 0;
+        let answered = false;
+
+        function startQuiz(level) {
+            // Master bazadan 100 ta savolni tanlab olamiz (agar darajaga qarab moslashtirmoqchi bo'lsak)
+            currentQuestions = [...masterQuestions];
+            
+            // Agar daraja qiyin bo'lsa savollarni biroz shaklini o'zgartirishimiz yoki aynan o'zini qoldirishimiz mumkin
+            currentIndex = 0;
+            score = 0;
+
+            document.getElementById('homeScreen').style.display = 'none';
+            document.getElementById('quizScreen').style.display = 'block';
+            document.getElementById('resultScreen').style.display = 'none';
+
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            answered = false;
+            let qData = currentQuestions[currentIndex];
+
+            document.getElementById('questionCount').innerText = `Savol: ${currentIndex + 1} / 100`;
+            document.getElementById('unitBadge').innerText = qData.unit;
+            document.getElementById('questionBox').innerText = qData.q;
+            
+            let progress = ((currentIndex) / 100) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+
+            let optionsList = document.getElementById('optionsList');
+            optionsList.innerHTML = '';
+
+            qData.opts.forEach(opt => {
+                let btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = opt;
+                btn.onclick = () => selectOption(btn, opt, qData.ans);
+                optionsList.appendChild(btn);
+            });
+
+            document.getElementById('explanationBox').style.display = 'none';
+            document.getElementById('nextBtn').style.display = 'none';
+        }
+
+        function selectOption(button, selectedOpt, correctOpt) {
+            if (answered) return;
+            answered = true;
+
+            let buttons = document.querySelectorAll('.option-btn');
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                if (btn.innerText === correctOpt) {
+                    btn.classList.add('correct');
+                }
+            });
+
+            if (selectedOpt === correctOpt) {
+                score++;
+            } else {
+                button.classList.add('incorrect');
+            }
+
+            let expBox = document.getElementById('explanationBox');
+            expBox.innerText = "💡 Izoh: " + currentQuestions[currentIndex].exp;
+            expBox.style.display = 'block';
+
+            document.getElementById('nextBtn').style.display = 'block';
+        }
+
+        function nextQuestion() {
+            currentIndex++;
+            if (currentIndex < currentQuestions.length) {
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            document.getElementById('quizScreen').style.display = 'none';
+            document.getElementById('resultScreen').style.display = 'block';
+
+            document.getElementById('scoreCircle').innerText = `${score} / 100`;
+            
+            let message = "";
+            if (score >= 90) {
+                message = "Mukammal natija! Siz New Round-Up 1 kitobini mukammal o'zlashtirgansiz! 🏆";
+            } else if (score >= 70) {
+                message = "Juda yaxshi natija! Xatolaringizni ko'rib chiqib yana urinib ko'ring. 👍";
+            } else {
+                message = "Yomon emas, kitobni yana bir bor takrorlab chiqib urinib ko'ring! 💪";
+            }
+            document.getElementById('resultMessage').innerText = message;
+        }
+
+        function resetToHome() {
+            document.getElementById('resultScreen').style.display = 'none';
+            document.getElementById('homeScreen').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
